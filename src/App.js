@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Board_View as BoardView} from './Board.js';
+
+
 
 class App extends Component {
   render() {
@@ -11,13 +14,15 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
+            <BoardView/>
+          hello
           <a
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn React or else.
           </a>
         </header>
       </div>

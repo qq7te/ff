@@ -1,11 +1,31 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {Board_View as BoardView} from './Board.js';
-
+import {BoardView, Tile} from './Board.js';
 
 
 class App extends Component {
+
+    constructor () {
+        super();
+        this.state = { board : [
+    new Tile(0, "reg"),
+    new Tile(1, "reg"),
+    new Tile(2, "reg"),
+    new Tile(3, "mew"),
+    new Tile(4, "reg")
+] };
+    }
+
+  moveBoard = () => {
+      const b = this.state.board.slice();
+      const tmp = b[2];
+      b[2] = b[3];
+      b[3] = tmp;
+      this.setState({board: b});
+  };
+
+
   render() {
     return (
       <div className="App">
@@ -14,7 +34,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-            <BoardView/>
+            <BoardView board={this.state.board}/>
           hello
           <a
             className="App-link"
@@ -24,6 +44,9 @@ class App extends Component {
           >
             Learn React or else.
           </a>
+          <p>
+            <button onClick={this.moveBoard}>I like to move it</button>
+          </p>
         </header>
       </div>
     );

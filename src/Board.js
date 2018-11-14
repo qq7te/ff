@@ -16,54 +16,24 @@ class Tile
 }
 
 
-class Tile_View extends Component
+class TileView extends Component
 {
-    constructor(tile) {
-        super();
-        // alert(tile.type);
-        const src = "reg" === tile.type ? blackhat : me;
-        this.state = {
-            model: tile,
-            src: src
-        };
-    }
     render() {
         return (
-            <div><img id={this.state.model.id} src={this.state.src} width="90" alt={"hi"} /></div>
+            <div><img id={this.props.tile.id} src={"reg" === this.props.tile.type ? blackhat : me} width="90" alt={"hi"} /></div>
         )
     }
 }
 
 
-class Board_View extends Component
+class BoardView extends Component
 {
-
-
-
-    constructor()
-    {
-        super();
-        this.state = {board:
-                [
-                    new Tile(0, "reg"),
-                    new Tile(1, "reg"),
-                    new Tile(2, "reg"),
-                    new Tile(3, "mew"),
-                    new Tile(4, "reg")
-                ]};
-    }
-
-    render() {
-        return (
+    render = () =>
             <div class={"grid-container"}>
-
-                {this.state.board.map((tile)  => {
-                    return new Tile_View(tile).render();
-                })}
-
+                {this.props.board.map((tile)  =>
+                        <TileView key={tile.id} tile={tile}/>
+                )}
             </div>
-        );
-    }
 }
 
-export { Board_View };
+export { BoardView, Tile };

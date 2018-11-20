@@ -30,8 +30,10 @@ class BoardView extends Component
 {
     render = () =>
             <div class={"grid-container"}>
-                {this.props.board.map((tile)  =>
+                {this.props.board.map((row)  =>
+                    row.map((tile) =>
                         <TileView key={tile.id} tile={tile}/>
+                    )
                 )}
             </div>
 }

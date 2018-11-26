@@ -1,10 +1,4 @@
-import React, { Component } from 'react';
-import './App.css';
 import './Board.css';
-
-import blackhat from './black-hat.png';
-import me from './me.jpg';
-
 
 class Tile
 {
@@ -15,27 +9,62 @@ class Tile
     }
 }
 
-
-class TileView extends Component
+class Board
 {
-    render() {
-        return (
-            <div><img id={this.props.tile.id} src={"reg" === this.props.tile.type ? blackhat : me} width="90" alt={"hi"} /></div>
-        )
+    constructor()
+    {
+        this.storm = {x: 0, y: 3};
+        this.tiles =
+            [[
+                new Tile(0, "reg"),
+                new Tile(1, "reg"),
+                new Tile(2, "reg"),
+                new Tile(3, "mew"),
+                new Tile(4, "reg")
+            ]
+                , [
+                new Tile(10, "reg"),
+                new Tile(11, "reg"),
+                new Tile(12, "reg"),
+                new Tile(13, "reg"),
+                new Tile(14, "reg")
+
+            ]];
     }
+
+    moveIt (direction)
+    {
+        var x = this.storm.x;
+        var y = this.storm.y;
+        var newx, newy;
+        switch (direction) {
+            case "u": {
+                newx = x - 1;
+                newy = y;
+                break;
+            }
+            case "d": {
+                newx = x + 1;
+                newy = y;
+                break;
+            }
+            case "l": {
+                newx = x; newy = y-1;
+                break;
+            }
+            case "r": {
+                newx = x; newy = y+1;
+                break;
+            }
+
+        }
+
+        const tmp = this.tiles[x][y];
+        this.tiles[x][y] = this.tiles[newx][newy];
+        this.tiles[newx][newy] = tmp;
+        this.storm = {x: newx, y: newy};
+    }
+
+
 }
-
-
-class BoardView extends Component
-{
-    render = () =>
-            <div class={"grid-container"}>
-                {this.props.board.map((row)  =>
-                    row.map((tile) =>
-                        <TileView key={tile.id} tile={tile}/>
-                    )
-                )}
-            </div>
-}
-
-export { BoardView, Tile };
+export { Board, Tile };

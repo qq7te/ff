@@ -1,5 +1,14 @@
 import './Board.css';
 
+const Direction = Object.freeze({
+    up: 'u',
+    down: 'd',
+    left: 'l',
+    right: 'r'
+});
+
+
+
 class Tile
 {
     constructor(id, type)
@@ -59,27 +68,30 @@ class Board
         var y = this.storm.y;
         var newx, newy;
         switch (direction) {
-            case "u": {
+            case Direction.up: {
                 newx = x - 1;
                 newy = y;
                 break;
             }
-            case "d": {
+            case Direction.down: {
                 newx = x + 1;
                 newy = y;
                 break;
             }
-            case "l": {
+            case Direction.left: {
                 newx = x; newy = y-1;
                 break;
             }
-            case "r": {
+            case Direction.right: {
                 newx = x; newy = y+1;
                 break;
             }
 
         }
-
+        if (newx<0||newx>4)
+            return;
+        if(newy<0||newy>4)
+            return;
         const tmp = this.tiles[x][y];
         this.tiles[x][y] = this.tiles[newx][newy];
         this.tiles[newx][newy] = tmp;
@@ -88,4 +100,4 @@ class Board
 
 
 }
-export { Board, Tile };
+export { Board, Direction, Tile };

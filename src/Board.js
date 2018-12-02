@@ -13,16 +13,37 @@ class Board
 {
     constructor()
     {
-        this.storm = {x: 0, y: 3};
+        this.storm = {x: 2, y: 2};
         this.tiles =
             [[
                 new Tile(0, "reg"),
                 new Tile(1, "reg"),
                 new Tile(2, "reg"),
-                new Tile(3, "mew"),
+                new Tile(3, "reg"),
                 new Tile(4, "reg")
             ]
                 , [
+                new Tile(10, "reg"),
+                new Tile(11, "reg"),
+                new Tile(12, "reg"),
+                new Tile(13, "reg"),
+                new Tile(14, "reg")
+
+            ]            , [
+                new Tile(10, "reg"),
+                new Tile(11, "reg"),
+                new Tile(12, "mew"),
+                new Tile(13, "reg"),
+                new Tile(14, "reg")
+
+            ]            , [
+                new Tile(10, "reg"),
+                new Tile(11, "reg"),
+                new Tile(12, "reg"),
+                new Tile(13, "reg"),
+                new Tile(14, "reg")
+
+            ]            , [
                 new Tile(10, "reg"),
                 new Tile(11, "reg"),
                 new Tile(12, "reg"),

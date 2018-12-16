@@ -5,6 +5,7 @@ import {Board, Direction} from './Board.js';
 
 import blackhat from './black-hat.png';
 import me from './me.jpg';
+import Player from "./Players";
 
 
 
@@ -12,7 +13,9 @@ class TileView extends Component
 {
     render() {
         return (
-            <div><img id={this.props.tile.id} src={"reg" === this.props.tile.type ? blackhat : me} width="90" alt={"hi"} /></div>
+            <div class={this.props.hilight ? "hilight" :""}>
+                <img id={this.props.tile.id} src={"reg" === this.props.tile.type ? blackhat : me} width="90" alt={"hi"} />
+            </div>
         )
     }
 }
@@ -24,7 +27,7 @@ class BoardView extends Component
         <div class={"grid-container"}>
             {this.props.board.tiles.map((row)  =>
                 row.map((tile) =>
-                    <TileView key={tile.id} tile={tile}/>
+                    <TileView hilight={this.props.highlights.indexOf(tile.id) > -1} key={tile.id} tile={tile}/>
                 )
             )}
         </div>
@@ -38,16 +41,20 @@ class App extends Component {
     constructor () {
         super();
         this.state = {board : board};
+        this.players = [new Player()];
+        this.currentPlayer = 0;
     }
 
 
   render() {
-    return (
+
+      const moves = this.players[this.currentPlayer].canMove(board, {x: 2, y: 3});
+      return (
       <div className="App">
         <header className="App-header">
           <p>
           </p>
-            <BoardView board={board}/>
+            <BoardView board={board} highlights={moves}/>
           <p>
             <button onClick={() => this.moveBoard(Direction.up)}>U</button>
               <button onClick={() => this.moveBoard(Direction.down)}>D</button>

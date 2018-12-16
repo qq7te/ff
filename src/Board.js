@@ -39,25 +39,25 @@ class Board
                 new Tile(14, "reg")
 
             ]            , [
-                new Tile(10, "reg"),
-                new Tile(11, "reg"),
-                new Tile(12, "mew"),
-                new Tile(13, "reg"),
-                new Tile(14, "reg")
+                new Tile(20, "reg"),
+                new Tile(21, "reg"),
+                new Tile(22, "mew"),
+                new Tile(23, "reg"),
+                new Tile(24, "reg")
 
             ]            , [
-                new Tile(10, "reg"),
-                new Tile(11, "reg"),
-                new Tile(12, "reg"),
-                new Tile(13, "reg"),
-                new Tile(14, "reg")
+                new Tile(30, "reg"),
+                new Tile(31, "reg"),
+                new Tile(32, "reg"),
+                new Tile(33, "reg"),
+                new Tile(34, "reg")
 
             ]            , [
-                new Tile(10, "reg"),
-                new Tile(11, "reg"),
-                new Tile(12, "reg"),
-                new Tile(13, "reg"),
-                new Tile(14, "reg")
+                new Tile(40, "reg"),
+                new Tile(41, "reg"),
+                new Tile(42, "reg"),
+                new Tile(43, "reg"),
+                new Tile(44, "reg")
 
             ]];
     }
@@ -98,6 +98,22 @@ class Board
         this.storm = {x: newx, y: newy};
     }
 
+    idToPos = (id) =>
+    {
+        for (var [x, row] of this.tiles)
+        {
+            for (var[y, vv] of row)
+            {
+                if (vv.id === id) return {x: x, y: y};
+            }
+        }
+        throw {id: id, message: "Invalid tile ID!!"};
+    }
+
+    posToId = (pos) =>
+    {
+        return this.tiles[pos.x][pos.y];
+    }
 
 }
 export { Board, Direction, Tile };

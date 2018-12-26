@@ -9,7 +9,6 @@ const isValid = (pos) =>
 class Player{
 
             canMove = (board, currentPos) => {
-                let good = [];
                 let potentials = [
                     {x: currentPos.x - 1, y: currentPos.y},  // up
                     {x: currentPos.x + 1, y: currentPos.y},  // down
@@ -17,13 +16,10 @@ class Player{
                     {x: currentPos.x, y: currentPos.y + 1}   // right
                 ];
 
-                potentials.forEach((pos) => {
-                    if (isValid(pos)) {
-                        const goodID = board.posToTile(pos).id;
-                        good.push(goodID);
-                    }
-                });
-
+                const good = potentials
+                    .filter(isValid)
+                    .map(board.posToTile)
+                    .map((tile) => {return tile.id;});
 
                 return good;
             }

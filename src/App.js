@@ -48,7 +48,7 @@ class App extends Component {
 
   render() {
 
-      const moves = this.players[this.currentPlayer].canMove(board, {x: 2, y: 3});
+      const moves = this.players[this.currentPlayer].canMove(board, board.storm);
       return (
       <div className="App">
         <header className="App-header">

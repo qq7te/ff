@@ -110,7 +110,7 @@ class Board
         throw {id: id, message: "Invalid tile ID!!"};
     }
 
-    posToId = (pos) =>
+    posToTile = (pos) =>
     {
         return this.tiles[pos.x][pos.y];
     }

@@ -30,3 +30,9 @@
     transform: rotate(360deg);
   }
 }
+
+.flexy {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 30px;
+}

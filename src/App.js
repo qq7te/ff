@@ -111,13 +111,8 @@ var board = new Board();
 
 class CardDeck extends Component {
         render = () =>
-            <table>
-                <tr>
-                    <td>{this.props.card.magnitude}</td>
-                    <td>{this.props.card.direction}</td>
-                </tr>
-            </table>
-}
+            <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
+    }
 
 
 
@@ -144,8 +139,10 @@ class App extends Component {
         <header className="App-header">
           <p>
           </p>
+            <div class="flexy">
             <BoardView board={board} highlights={moves}/>
             <CardDeck card={this.state.lastCard}/>
+            </div>
           <p>
               <button onClick={() => this.moveBoard(Direction.up)}>U</button>
               <button onClick={() => this.moveBoard(Direction.down)}>D</button>

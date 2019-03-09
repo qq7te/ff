@@ -37,7 +37,7 @@ const isValid = (pos) =>
                     .map((tile) => {return tile.id;});
 
                 return good;
-            }
+        }
 
 }
 

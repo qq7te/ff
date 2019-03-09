@@ -8,7 +8,7 @@ import onesanded from './one-sanded.png';
 import blackhat from './black-hat.png';
 import me from './me.jpg';
 import Player from "./Players";
-
+//import 'math';
 
 
 class TileView extends Component
@@ -40,6 +40,54 @@ class BoardView extends Component
 }
 
 var board = new Board();
+
+
+    class carta_normale {
+        constructor (direction, magnitude) {
+            this.direction = direction;
+            this.magnitude = magnitude;
+        }
+    }
+
+    class carta_speciale {
+        constructor (tipo) {
+            this.tipo = tipo;
+        }
+    }
+
+
+ var deck = [
+            new carta_normale(Direction.up, 1),
+            new carta_normale(Direction.up, 2),
+            new carta_normale(Direction.up, 3),
+
+            new carta_normale(Direction.down, 1),
+            new carta_normale(Direction.down, 2),
+            new carta_normale(Direction.down, 3),
+
+            new carta_normale(Direction.left, 1),
+            new carta_normale(Direction.left, 2),
+            new carta_normale(Direction.left, 3),
+
+            new carta_normale(Direction.right, 1),
+            new carta_normale(Direction.right, 2),
+            new carta_normale(Direction.right, 3),
+
+//            new carta_speciale("WindPU"),
+//            new carta_speciale("SunBD")
+ ];
+
+    var usedDeck = [];
+
+    function pickCard (deck1, deck2){
+       console.log("the deck has " + deck1.length + " cards!");
+        var index = Math.floor(Math.random() * deck1.length);
+       var pickedCard = deck1[index];
+       deck2.push(pickedCard);
+       deck1.splice(index, 1);
+       return pickedCard;
+    }
+
 
 
 class App extends Component {
@@ -81,11 +129,11 @@ class App extends Component {
     };
 
 
-moveTheStorm = (carta) => {
-  for (var i=0, i<carta.magnitude, i++) {
-    moveBoard(carta.direction);
-  }
-}
+    moveTheStorm = (carta) => {
+        for (var i=0; i<carta.magnitude; i++) {
+            this.moveBoard(carta.direction);
+        }
+    };
 
 }
 

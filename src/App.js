@@ -62,12 +62,13 @@ class App extends Component {
           </p>
             <BoardView board={board} highlights={moves}/>
           <p>
-            <button onClick={() => this.moveBoard(Direction.up)}>U</button>
+              <button onClick={() => this.moveBoard(Direction.up)}>U</button>
               <button onClick={() => this.moveBoard(Direction.down)}>D</button>
               <button onClick={() => this.moveBoard(Direction.left)}>L</button>
               <button onClick={() => this.moveBoard(Direction.right)}>R</button>
 
           </p>
+  <button onClick={() => this.moveTheStorm(pickCard(deck, usedDeck))}>UNLEASH THE DOOM!!!</button>
             {/*<img src={logo} className="App-logo" alt="logo" />*/}
         </header>
       </div>
@@ -80,6 +81,15 @@ class App extends Component {
     };
 
 
+moveTheStorm = (carta) => {
+  for (var i=0, i<carta.magnitude, i++) {
+    moveBoard(carta.direction);
+  }
 }
+
+}
+
+
+// rishi waz here
 
 export default App;

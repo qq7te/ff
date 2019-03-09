@@ -73,11 +73,27 @@ var board = new Board();
             new carta_normale(Direction.right, 2),
             new carta_normale(Direction.right, 3),
 
-//            new carta_speciale("WindPU"),
+           // new carta_speciale("WindPU")
 //            new carta_speciale("SunBD")
  ];
 
     var usedDeck = [];
+
+    var stormMeter = [2,2,3,3,4,5,6];
+    var stormLevel = 0;
+
+
+
+
+
+
+    function checkCard (pickedCard){
+        if(pickedCard instanceof carta_speciale){
+        if(pickedCard.tipo === "WindPU"){
+            stormLevel++;
+        }
+        }
+    }
 
     function pickCard (deck1, deck2){
        console.log("the deck has " + deck1.length + " cards!");
@@ -85,8 +101,15 @@ var board = new Board();
        var pickedCard = deck1[index];
        deck2.push(pickedCard);
        deck1.splice(index, 1);
+       if(deck1.length === 0){
+           deck1.push(...deck2);
+           deck2.splice(0, deck2.length);
+           console.log("the deck ... now ...  has " + deck1.length + " cards!");
+       }
        return pickedCard;
     }
+
+
 
 
 

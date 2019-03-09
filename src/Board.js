@@ -15,6 +15,7 @@ class Tile
     {
         this.id = id;
         this.type = type;
+        this.sand = 0;
     }
 }
 
@@ -95,6 +96,8 @@ class Board
         const tmp = this.tiles[x][y];
         this.tiles[x][y] = this.tiles[newx][newy];
         this.tiles[newx][newy] = tmp;
+        //add sand
+        this.tiles[x][y].sand++;
         this.storm = {x: newx, y: newy};
     }
 

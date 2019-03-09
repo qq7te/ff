@@ -56,7 +56,7 @@ var board = new Board();
     }
 
 
- var deck = [
+ var startDeck = [
             new carta_normale(Direction.up, 1),
             new carta_normale(Direction.up, 2),
             new carta_normale(Direction.up, 3),
@@ -77,7 +77,7 @@ var board = new Board();
 //            new carta_speciale("SunBD")
  ];
 
-    var usedDeck = [];
+    // var usedDeck = [];
 
     var stormMeter = [2,2,3,3,4,5,6];
     var stormLevel = 0;
@@ -109,7 +109,15 @@ var board = new Board();
        return pickedCard;
     }
 
-
+class CardDeck extends Component {
+        render = () =>
+            <table>
+                <tr>
+                    <td>{this.props.card.magnitude}</td>
+                    <td>{this.props.card.direction}</td>
+                </tr>
+            </table>
+}
 
 
 
@@ -117,7 +125,12 @@ class App extends Component {
 
     constructor () {
         super();
-        this.state = {board : board};
+        this.state = {
+            board: board,
+            usedDeck: [],
+            theDeck: startDeck,
+            lastCard: {magnitude: 20, direction: "nowhere"}
+        };
         this.players = [new Player()];
         this.currentPlayer = 0;
     }
@@ -132,6 +145,7 @@ class App extends Component {
           <p>
           </p>
             <BoardView board={board} highlights={moves}/>
+            <CardDeck card={this.state.lastCard}/>
           <p>
               <button onClick={() => this.moveBoard(Direction.up)}>U</button>
               <button onClick={() => this.moveBoard(Direction.down)}>D</button>
@@ -139,7 +153,7 @@ class App extends Component {
               <button onClick={() => this.moveBoard(Direction.right)}>R</button>
 
           </p>
-  <button onClick={() => this.moveTheStorm(pickCard(deck, usedDeck))}>UNLEASH THE DOOM!!!</button>
+  <button onClick={() => this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))}>UNLEASH THE DOOM!!!</button>
             {/*<img src={logo} className="App-logo" alt="logo" />*/}
         </header>
       </div>
@@ -153,6 +167,8 @@ class App extends Component {
 
 
     moveTheStorm = (carta) => {
+        this.setState({theDeck: this.state.theDeck, usedDeck: this.state.usedDeck});
+        this.setState({lastCard: carta});
         for (var i=0; i<carta.magnitude; i++) {
             this.moveBoard(carta.direction);
         }

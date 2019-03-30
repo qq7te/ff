@@ -151,7 +151,12 @@ class App extends Component {
               <button onClick={() => this.moveBoard(Direction.right)}>R</button>
 
           </p>
-  <button onClick={() => this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))}>UNLEASH THE DOOM!!!</button>
+  <button onClick={() => {
+      for(var i = 0; i<stormMeter[stormLevel]; i = i+1){
+          this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
+      }
+
+  }}>UNLEASH THE DOOM!!!</button>
             {/*<img src={logo} className="App-logo" alt="logo" />*/}
         </header>
       </div>

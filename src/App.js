@@ -73,24 +73,18 @@ var board = new Board();
             new carta_normale(Direction.right, 2),
             new carta_normale(Direction.right, 3),
 
-           // new carta_speciale("WindPU")
+            new carta_speciale("WindPU")
 //            new carta_speciale("SunBD")
  ];
 
-    // var usedDeck = [];
-
-    var stormMeter = [2,2,3,3,4,5,6];
-    var stormLevel = 0;
-
-
-
-
+var stormMeter = [2,3,4,5,6];
+var stormLevel = 0;
 
 
     function checkCard (pickedCard){
         if(pickedCard instanceof carta_speciale){
         if(pickedCard.tipo === "WindPU"){
-            stormLevel++;
+            stormLevel = stormLevel+1;
         }
         }
     }
@@ -106,6 +100,7 @@ var board = new Board();
            deck2.splice(0, deck2.length);
            console.log("the deck ... now ...  has " + deck1.length + " cards!");
        }
+       checkCard(pickedCard);
        return pickedCard;
     }
 
@@ -113,6 +108,11 @@ class CardDeck extends Component {
         render = () =>
             <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
     }
+
+class StormMeter extends Component {
+        render = () =>
+            <span> Storm meter: {stormMeter[stormLevel]}</span>
+}
 
 
 
@@ -142,6 +142,7 @@ class App extends Component {
             <div class="flexy">
             <BoardView board={board} highlights={moves}/>
             <CardDeck card={this.state.lastCard}/>
+            <StormMeter/>
             </div>
           <p>
               <button onClick={() => this.moveBoard(Direction.up)}>U</button>

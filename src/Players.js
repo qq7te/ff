@@ -21,7 +21,7 @@ const isValid = (pos) =>
                 };
 }
     
-    class Player
+    class PlayerCan
     {
         canMove = (board, currentPos) => {
                 let potentials = [
@@ -41,4 +41,4 @@ const isValid = (pos) =>
 
 }
 
-export default Player;
+export default PlayerCan;

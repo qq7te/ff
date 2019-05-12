@@ -21,8 +21,16 @@ const isValid = (pos) =>
                 };
 }
     
-    class PlayerCan
+    class Player
     {
+        constructor(type, tileID, gear_cards, water_size, water_level) {
+            this.type = type;
+            this.position = tileID;
+            this.gear_cards = gear_cards;
+            this.water_size = water_size;
+            this.water_level = water_level;
+         }
+
         canMove = (board, currentPos) => {
                 let potentials = [
                     {x: currentPos.x - 1, y: currentPos.y},  // up
@@ -41,4 +49,4 @@ const isValid = (pos) =>
 
 }
 
-export default PlayerCan;
+export default Player;

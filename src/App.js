@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {Board, Direction} from './Board.js';
 
@@ -7,8 +6,7 @@ import blocked from './blocked.png';
 import onesanded from './one-sanded.png';
 import blackhat from './black-hat.png';
 import me from './me.jpg';
-import PlayerCan from "./Players";
-//import 'math';
+import Player from "./Players";
 
 
 class TileView extends Component
@@ -41,33 +39,12 @@ class BoardView extends Component
 
 var board = new Board();
 
-    class Player {
-        constructor(type, tileID, gear_cards, water_size, water_level) {
-            this.type = type;
-            this.position = tileID;
-            this.gear_cards = gear_cards;
-            this.water_size = water_size;
-            this.water_level = water_level;
-         }
-    }
     var Climber = new Player ("Climber", 1, [], 4, 4);
     var Watercarrier = new Player ("Watercarrier", 1, [], 6, 6);
     var Explorer = new Player ("Explorer", 1, [], 3, 3);
     var Archaeologist = new Player ("Adventurer", 1, [], 4, 4);
     var Navigator = new Player ("Navigator", 1,[], 3,3);
     var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
-
-var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
-
-    var activePlayerIndex = 0;
-
-    function nextTurn (){
-        activePlayerIndex = activePlayerIndex+1;
-        if (activePlayerIndex===PlayerList.length) {
-            activePlayerIndex = 0;
-        }
-    }
-
 
     class carta_normale {
         constructor (direction, magnitude) {
@@ -131,28 +108,6 @@ var stormLevel = 0;
        return pickedCard;
     }
 
-function movePlayer (board, playerType, direction) {
-       var playerX=board.idToPos(playerType.position).x;
-       var playerY=board.idToPos(playerType.position).y;
-
-        if (direction=="up"){
-            playerX=playerX-1;
-        }
-        else if (direction=="down"){
-            playerX=playerX+1;
-        }
-        else if (direction=="left"){
-            playerY=playerY-1;
-        }
-        else if (direction=="right"){
-            playerY=playerY+1;
-        } else {}
-
-    var tile = board.posToTile(playerX, playerY);
-     PlayerList[activePlayerIndex].position = tile;
-    }
-
-
 class CardDeck extends Component {
         render = () =>
             <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
@@ -176,16 +131,24 @@ class App extends Component {
             board: board,
             usedDeck: [],
             theDeck: startDeck,
-            lastCard: {magnitude: 20, direction: "nowhere"}
+            lastCard: {magnitude: 20, direction: "nowhere"},
+            players: [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist],
+            currentPlayer: 0,
         };
-        this.players = [new PlayerCan()];
-        this.currentPlayer = 0;
     }
 
+    nextTurn (){
+        let newPlayerIndex = this.state.currentPlayer + 1;
+        if (newPlayerIndex===this.state.players.length) {
+            newPlayerIndex = 0;
+        }
+        this.setState({currentPlayer: newPlayerIndex});
+    }
 
   render() {
 
-      const moves = this.players[this.currentPlayer].canMove(board, board.storm);
+      const currentPlayer = this.state.players[this.state.currentPlayer];
+      const moves = currentPlayer.canMove(board, board.storm);
       const bb = this.state.board;
       return (
       <div className="App">
@@ -196,19 +159,19 @@ class App extends Component {
                 <BoardView board={board} highlights={moves}/>
                 <CardDeck card={this.state.lastCard}/>
                 <StormMeter/><p>
-                <PlayerView player={Climber}/>
-                <PlayerView player={Explorer}/>
-                <PlayerView player={Archaeologist}/>
-                <PlayerView player={Watercarrier}/>
-                <PlayerView player={Navigator}/>
-                <PlayerView player={Meteorologist}/>
+                <PlayerView player={this.state.players[0]}/>
+                <PlayerView player={this.state.players[1]}/>
+                <PlayerView player={this.state.players[2]}/>
+                <PlayerView player={this.state.players[3]}/>
+                <PlayerView player={this.state.players[4]}/>
+                <PlayerView player={this.state.players[5]}/>
                 </p>
             </div>
           <p>
-              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"up")}>U</button>
-              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"down")}>D</button>
-              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"left")}>L</button>
-              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"right")}>R</button>
+              <button onClick={() => this.movePlayer(currentPlayer,Direction.up)}>U</button>
+              <button onClick={() => this.movePlayer(currentPlayer,Direction.down)}>D</button>
+              <button onClick={() => this.movePlayer(currentPlayer,Direction.left)}>L</button>
+              <button onClick={() => this.movePlayer(currentPlayer,Direction.right)}>R</button>
 
           </p>
   <button onClick={() => {
@@ -217,17 +180,32 @@ class App extends Component {
       }
 
   }}>UNLEASH THE DOOM!!!</button>
-            {/*<img src={logo} className="App-logo" alt="logo" />*/}
+            <button onClick={() => {this.nextTurn();}}>Next turn</button>
         </header>
       </div>
     );
   }
 
     moveBoard = (direction) => {
-        this.state.board.moveIt(direction);
+        this.state.board.moveStorm(direction);
         this.setState({board: this.state.board});
     };
 
+    movePlayer = (player, direction) => {
+
+        const pos = this.state.board.idToPos(player.position);
+        const newpos = board.getNewCoordinates(pos, direction);
+
+        const newtile = board.posToTile(newpos);
+        const newplayers = this.state.players.map((p) =>
+        {
+            if (p.type === player.type) {
+                p.position = newtile.id;
+            }
+            return p;
+        });
+        this.setState({players: newplayers});
+    };
 
     moveTheStorm = (carta) => {
         this.setState({theDeck: this.state.theDeck, usedDeck: this.state.usedDeck});

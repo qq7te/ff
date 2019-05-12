@@ -61,38 +61,46 @@ class Board
                 new Tile(44, "reg")
 
             ]];
+        this.size = this.tiles.length;
     }
 
-    moveIt (direction)
-    {
-        var x = this.storm.x;
-        var y = this.storm.y;
-        var newx, newy;
+    getNewCoordinates (old_point, direction) {
+        const x = old_point.x;
+        const y = old_point.y;
+        var point;
         switch (direction) {
             case Direction.up: {
-                newx = x - 1;
-                newy = y;
+                point = {x: Math.max(0, x - 1), y: y};
                 break;
             }
             case Direction.down: {
-                newx = x + 1;
-                newy = y;
+                point = {x: Math.min( this.size -1, x + 1),  y: y};
                 break;
             }
             case Direction.left: {
-                newx = x; newy = y-1;
+                point = {x: x, y: Math.max(0, y-1)};
                 break;
             }
             case Direction.right: {
-                newx = x; newy = y+1;
+                point = {x: x, y : Math.min(this.size -1, y+1)};
                 break;
             }
-
+            default:
+                throw 'invalid direction! This is impossible!';
         }
-        if (newx<0||newx>4)
-            return;
-        if(newy<0||newy>4)
-            return;
+        return point;
+    }
+
+
+    moveStorm (direction)
+    {
+        const x = this.storm.x;
+        const y = this.storm.y;
+        const newpoint = this.getNewCoordinates({x: x, y: y},
+            direction);
+        const newx = newpoint.x;
+        const newy = newpoint.y;
+
         const tmp = this.tiles[x][y];
         this.tiles[x][y] = this.tiles[newx][newy];
         this.tiles[newx][newy] = tmp;

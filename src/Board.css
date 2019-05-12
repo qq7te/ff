@@ -12,6 +12,7 @@
     padding: 10px;
 }
 .grid-container>div {
+    position: relative;
     background-color: rgba(255, 255, 255, 0.8);
     text-align: center;
     padding:10px 10px 10px;
@@ -19,4 +20,10 @@
 }
 .grid-container .hilight {
     background-color: rgba(255, 0, 0, 0.8);
+}
+
+.pedone {
+    position: absolute;
+    bottom: 10px;
+    right: 2px;
 }

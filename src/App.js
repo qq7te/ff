@@ -6,6 +6,7 @@ import blocked from './blocked.png';
 import onesanded from './one-sanded.png';
 import blackhat from './black-hat.png';
 import me from './me.jpg';
+import green from './green.png';
 import Player from "./Players";
 
 
@@ -13,12 +14,24 @@ class TileView extends Component
 {
     render() {
         let img = blackhat;
-        if (this.props.tile.sand === 1) img  = onesanded;
-        if (this.props.tile.sand > 1) img = blocked;
-        if (this.props.tile.type !== "reg") img = me;
+        const tile = this.props.tile;
+        if (tile.sand === 1) img  = onesanded;
+        if (tile.sand > 1) img = blocked;
+        if (tile.type !== "reg") img = me;
+        let hasClimber = false;
+        for (let player of this.props.players) {
+            if (player.position === tile.id) {
+                hasClimber = true;
+            }
+        }
         return (
             <div class={this.props.hilight ? "hilight" :""}>
-                <img id={this.props.tile.id} src={img} width="90" alt={"hi"} />
+                <img id={tile.id} src={img} width="90" alt={"hi"} />
+                {
+                    hasClimber ? (
+                        <img className={"pedone"} src={green} width={"90"}/>
+                    ) : ('')
+                }
             </div>
         )
     }
@@ -31,7 +44,7 @@ class BoardView extends Component
         <div class={"grid-container"}>
             {this.props.board.tiles.map((row)  =>
                 row.map((tile) =>
-                    <TileView hilight={this.props.highlights.indexOf(tile.id) > -1} key={tile.id} tile={tile}/>
+                    <TileView players={this.props.players} hilight={this.props.highlights.indexOf(tile.id) > -1} key={tile.id} tile={tile}/>
                 )
             )}
         </div>
@@ -149,14 +162,13 @@ class App extends Component {
 
       const currentPlayer = this.state.players[this.state.currentPlayer];
       const moves = currentPlayer.canMove(board, board.storm);
-      const bb = this.state.board;
       return (
       <div className="App">
         <header className="App-header">
           <p>
           </p>
             <div class="flexy">
-                <BoardView board={board} highlights={moves}/>
+                <BoardView board={board} players={this.state.players} highlights={moves}/>
                 <CardDeck card={this.state.lastCard}/>
                 <StormMeter/><p>
                 <PlayerView player={this.state.players[0]}/>

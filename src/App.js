@@ -17,7 +17,11 @@ class TileView extends Component
         let img = blackhat;
         if (this.props.tile.sand === 1) img  = onesanded;
         if (this.props.tile.sand > 1) img = blocked;
-        if (this.props.tile.type !== "reg") img = me;
+        if (this.props.tile.type !== "reg") {
+          return (
+            <div></div>
+          )
+        }
         return (
             <div class={this.props.hilight ? "hilight" :""}>
                 <img id={this.props.tile.id} src={img} width="90" alt={"hi"} />
@@ -54,6 +58,7 @@ var board = new Board();
             this.tipo = tipo;
         }
     }
+  
 
 
  var startDeck = [
@@ -80,7 +85,6 @@ var board = new Board();
 var stormMeter = [2,3,4,5,6];
 var stormLevel = 0;
 
-
     function checkCard (pickedCard){
         if(pickedCard instanceof carta_speciale){
         if(pickedCard.tipo === "WindPU"){
@@ -105,17 +109,34 @@ var stormLevel = 0;
     }
 
 class CardDeck extends Component {
+  
+  printDirection = function (dir){
+    if (dir == Direction.up) {
+      return("up");
+    }
+    if (dir == Direction.down) {
+      return("down");
+    }
+    if (dir == Direction.left) {
+      return("left");
+    }
+    if (dir == Direction.right) {
+      return("right");
+    }
+  }
+  
         render = () =>
-            <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
+            <span> The last card was {this.props.card.magnitude} {this.props.card.direction} </span>
     }
 
 class StormMeter extends Component {
         render = () =>
-            <span> Storm meter: {stormMeter[stormLevel]}</span>
+            <span><p> Storm meter: {stormMeter[stormLevel]}</p></span>
 }
 
 
 
+    
 class App extends Component {
 
     constructor () {
@@ -174,10 +195,13 @@ class App extends Component {
         this.setState({lastCard: carta});
         for (var i=0; i<carta.magnitude; i++) {
             this.moveBoard(carta.direction);
+            /*function sleep (time) {
+              return new Promise((resolve) => setTimeout(resolve, time));
+            }
+            sleep(500).then(() => {});*/
         }
     };
-
-}
+    
 
 
 // rishi waz here

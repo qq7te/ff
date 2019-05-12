@@ -53,11 +53,11 @@ var board = new Board();
     var Climber = new Player ("Climber", 1, [], 4, 4);
     var Watercarrier = new Player ("Watercarrier", 1, [], 6, 6);
     var Explorer = new Player ("Explorer", 1, [], 3, 3);
-    var Adventurer = new Player ("Adventurer", 1, [], 4, 4);
+    var Archaeologist = new Player ("Adventurer", 1, [], 4, 4);
     var Navigator = new Player ("Navigator", 1,[], 3,3);
     var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
 
-var PlayerList = [Climber, Watercarrier, Explorer, Adventurer, Navigator, Meteorologist];
+var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
 
     var activePlayerIndex = 0;
 
@@ -144,7 +144,12 @@ class StormMeter extends Component {
             <span> Storm meter: {stormMeter[stormLevel]}</span>
 }
 
+class PlayerView extends Component {
 
+
+        render = () =>
+            <span> {this.props.player.type} is on tile {this.props.player.position}</span>
+}
 
 class App extends Component {
 
@@ -170,9 +175,16 @@ class App extends Component {
           <p>
           </p>
             <div class="flexy">
-            <BoardView board={board} highlights={moves}/>
-            <CardDeck card={this.state.lastCard}/>
-            <StormMeter/>
+                <BoardView board={board} highlights={moves}/>
+                <CardDeck card={this.state.lastCard}/>
+                <StormMeter/><p>
+                <PlayerView player={Climber}/>
+                <PlayerView player={Explorer}/>
+                <PlayerView player={Archaeologist}/>
+                <PlayerView player={Watercarrier}/>
+                <PlayerView player={Navigator}/>
+                <PlayerView player={Meteorologist}/>
+                </p>
             </div>
           <p>
               <button onClick={() => this.moveBoard(Direction.up)}>U</button>

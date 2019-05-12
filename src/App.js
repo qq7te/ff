@@ -145,10 +145,8 @@ class StormMeter extends Component {
 }
 
 class PlayerView extends Component {
-
-
         render = () =>
-            <span> {this.props.player.type} is on tile {this.props.player.position}</span>
+            <span> {this.props.player.type} is on tile ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
 }
 
 class App extends Component {

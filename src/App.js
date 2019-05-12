@@ -69,9 +69,6 @@ var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Met
     }
 
 
-
-
-
     class carta_normale {
         constructor (direction, magnitude) {
             this.direction = direction;
@@ -134,6 +131,28 @@ var stormLevel = 0;
        return pickedCard;
     }
 
+function movePlayer (board, playerType, direction) {
+       var playerX=board.idToPos(playerType.position).x;
+       var playerY=board.idToPos(playerType.position).y;
+
+        if (direction=="up"){
+            playerX=playerX-1;
+        }
+        else if (direction=="down"){
+            playerX=playerX+1;
+        }
+        else if (direction=="left"){
+            playerY=playerY-1;
+        }
+        else if (direction=="right"){
+            playerY=playerY+1;
+        } else {}
+
+    var tile = board.posToTile(playerX, playerY);
+     PlayerList[activePlayerIndex].position = tile;
+    }
+
+
 class CardDeck extends Component {
         render = () =>
             <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
@@ -167,6 +186,7 @@ class App extends Component {
   render() {
 
       const moves = this.players[this.currentPlayer].canMove(board, board.storm);
+      const bb = this.state.board;
       return (
       <div className="App">
         <header className="App-header">
@@ -185,10 +205,10 @@ class App extends Component {
                 </p>
             </div>
           <p>
-              <button onClick={() => this.moveBoard(Direction.up)}>U</button>
-              <button onClick={() => this.moveBoard(Direction.down)}>D</button>
-              <button onClick={() => this.moveBoard(Direction.left)}>L</button>
-              <button onClick={() => this.moveBoard(Direction.right)}>R</button>
+              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"up")}>U</button>
+              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"down")}>D</button>
+              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"left")}>L</button>
+              <button onClick={() => movePlayer(bb, PlayerList[activePlayerIndex],"right")}>R</button>
 
           </p>
   <button onClick={() => {

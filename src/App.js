@@ -7,7 +7,7 @@ import blocked from './blocked.png';
 import onesanded from './one-sanded.png';
 import blackhat from './black-hat.png';
 import me from './me.jpg';
-import Player from "./Players";
+import PlayerCan from "./Players";
 //import 'math';
 
 
@@ -45,6 +45,36 @@ class BoardView extends Component
 
 var board = new Board();
 
+    class Player {
+        constructor(type, tileID, gear_cards, water_size, water_level) {
+            this.type = type;
+            this.position = tileID;
+            this.gear_cards = gear_cards;
+            this.water_size = water_size;
+            this.water_level = water_level;
+         }
+    }
+    var Climber = new Player ("Climber", 1, [], 4, 4);
+    var Watercarrier = new Player ("Watercarrier", 1, [], 6, 6);
+    var Explorer = new Player ("Explorer", 1, [], 3, 3);
+    var Archaeologist = new Player ("Adventurer", 1, [], 4, 4);
+    var Navigator = new Player ("Navigator", 1,[], 3,3);
+    var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
+
+var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
+
+    var activePlayerIndex = 0;
+
+    function nextTurn (){
+        activePlayerIndex = activePlayerIndex+1;
+        if (activePlayerIndex===PlayerList.length) {
+            activePlayerIndex = 0;
+        }
+    }
+
+
+
+
 
     class carta_normale {
         constructor (direction, magnitude) {
@@ -79,7 +109,7 @@ var board = new Board();
             new carta_normale(Direction.right, 3),
 
             new carta_speciale("WindPU")
-//            new carta_speciale("SunBD")
+//          new carta_speciale("SunBD")
  ];
 
 var stormMeter = [2,3,4,5,6];
@@ -134,7 +164,10 @@ class StormMeter extends Component {
             <span><p> Storm meter: {stormMeter[stormLevel]}</p></span>
 }
 
-
+class PlayerView extends Component {
+        render = () =>
+            <span> {this.props.player.type} is on tile ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
+}
 
     
 class App extends Component {
@@ -147,7 +180,7 @@ class App extends Component {
             theDeck: startDeck,
             lastCard: {magnitude: 20, direction: "nowhere"}
         };
-        this.players = [new Player()];
+        this.players = [new PlayerCan()];
         this.currentPlayer = 0;
     }
 
@@ -161,9 +194,16 @@ class App extends Component {
           <p>
           </p>
             <div class="flexy">
-            <BoardView board={board} highlights={moves}/>
-            <CardDeck card={this.state.lastCard}/>
-            <StormMeter/>
+                <BoardView board={board} highlights={moves}/>
+                <CardDeck card={this.state.lastCard}/>
+                <StormMeter/><p>
+                <PlayerView player={Climber}/>
+                <PlayerView player={Explorer}/>
+                <PlayerView player={Archaeologist}/>
+                <PlayerView player={Watercarrier}/>
+                <PlayerView player={Navigator}/>
+                <PlayerView player={Meteorologist}/>
+                </p>
             </div>
           <p>
               <button onClick={() => this.moveBoard(Direction.up)}>U</button>
@@ -203,7 +243,6 @@ class App extends Component {
     };
     
 
-
-// rishi waz here
-
 export default App;
+
+          //bello!

@@ -103,15 +103,19 @@ class Board
 
     idToPos = (id) =>
     {
-        for (var [x, row] of this.tiles)
+        let x = 0;
+        for (let row of this.tiles)
         {
-            for (var[y, vv] of row)
+            let y = 0;
+            for (let cell of row)
             {
-                if (vv.id === id) return {x: x, y: y};
+                if (cell.id === id) return {x: x, y: y};
+                y++;
             }
+            x++;
         }
         throw {id: id, message: "Invalid tile ID!!"};
-    }
+    };
 
     posToTile = (pos) =>
     {

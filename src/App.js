@@ -53,7 +53,7 @@ var board = new Board();
     var Climber = new Player ("Climber", 1, [], 4, 4);
     var Watercarrier = new Player ("Watercarrier", 1, [], 6, 6);
     var Explorer = new Player ("Explorer", 1, [], 3, 3);
-    var Archaeologist = new Player ("Adventurer", 1, [], 4, 4);
+    var Archaeologist = new Player ("Archaeologist", 1, [], 4, 4);
     var Navigator = new Player ("Navigator", 1,[], 3,3);
     var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
 
@@ -100,8 +100,8 @@ var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Met
             new carta_normale(Direction.right, 2),
             new carta_normale(Direction.right, 3),
 
-            new carta_speciale("WindPU")
-//          new carta_speciale("SunBD")
+            new carta_speciale("WindPU"),
+            new carta_speciale("SunBD")
  ];
 
 var stormMeter = [2,3,4,5,6];
@@ -112,6 +112,12 @@ var stormLevel = 0;
         if(pickedCard instanceof carta_speciale){
         if(pickedCard.tipo === "WindPU"){
             stormLevel = stormLevel+1;
+        }
+        if(pickedCard.tipo === "SunBD"){
+            var i;
+            for (i=0; i<PlayerList.length; i++){
+                PlayerList[i].water_level = PlayerList[i].water_level -1
+            }
         }
         }
     }
@@ -168,6 +174,11 @@ class PlayerView extends Component {
             <span> {this.props.player.type} is on tile ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
 }
 
+class WaterLevelView extends Component {
+        render = () =>
+            <span> The water level of the {this.props.player.type} is currently {this.props.player.water_level}</span>
+}
+
 class App extends Component {
 
     constructor () {
@@ -202,6 +213,12 @@ class App extends Component {
                 <PlayerView player={Watercarrier}/>
                 <PlayerView player={Navigator}/>
                 <PlayerView player={Meteorologist}/>
+                <WaterLevelView player={Climber}/>
+                <WaterLevelView player={Explorer}/>
+                <WaterLevelView player={Archaeologist}/>
+                <WaterLevelView player={Watercarrier}/>
+                <WaterLevelView player={Navigator}/>
+                <WaterLevelView player={Meteorologist}/>
                 </p>
             </div>
           <p>

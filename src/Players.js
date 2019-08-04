@@ -25,7 +25,7 @@ const isValid = (pos) =>
     {
         constructor(type, tileID, gear_cards, water_size, water_level) {
             this.type = type;
-            this.position = tileID;
+            this.tileID = tileID;
             this.gear_cards = gear_cards;
             this.water_size = water_size;
             this.water_level = water_level;

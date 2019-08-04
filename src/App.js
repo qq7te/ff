@@ -57,12 +57,12 @@ class BoardView extends Component
 
 var board = new Board();
 
-    var Climber = new Player ("Climber", 1, [], 4, 4);
-    var Watercarrier = new Player ("Watercarrier", 1, [], 6, 6);
-    var Explorer = new Player ("Explorer", 1, [], 3, 3);
-    var Archaeologist = new Player ("Archaeologist", 1, [], 4, 4);
-    var Navigator = new Player ("Navigator", 1,[], 3,3);
-    var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
+    var Climber = new Player ("Climber", 1, [], 3, 3);
+    var Watercarrier = new Player ("Watercarrier", 1, [], 5, 5);
+    var Explorer = new Player ("Explorer", 1, [], 4, 4);
+    var Archaeologist = new Player ("Archaeologist", 1, [], 3, 3);
+    var Navigator = new Player ("Navigator", 1,[], 4, 4);
+    var Meteorologist = new Player ("Meteorologist",1, [], 4, 4);
 
     var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
 
@@ -256,13 +256,13 @@ class App extends Component {
               <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.up)}>U</button></div>
               <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.left)}>L</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.right)}>R</button></div>
-              <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D</button></div>
-
-          </p> <p>
-                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.up)}>Shovel up</button>
-                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.down)}>Shovel down</button>
-                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.left)}>Shovel left</button>
-                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.right)}>Shovel right</button>
+              <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D</button></div><br/>
+              <br/>
+                <div align="center"><button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.up)}>Shovel up</button></div>
+                <div align="center"><button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.left)}>Shovel left</button>&nbsp;
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), "already here")}>Shovel in place</button>&nbsp;
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.right)}>Shovel right</button></div>
+                <div align="center"><button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.down)}>Shovel down</button></div>
 
             </p>
                     <button onClick={() => {
@@ -317,6 +317,11 @@ class App extends Component {
             shoveltile.x=position.x;
 
         }
+        
+        if (direction==="already here"){
+            shoveltile=position;
+        }
+        
 
         console.log("shoveling ID " + shoveltile.x + "," + shoveltile.y);
         let tile = this.state.board.posToTile(shoveltile);

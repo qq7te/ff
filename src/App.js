@@ -230,10 +230,10 @@ class App extends Component {
                 </div>
             </div>
           <p>
-              <div align="center"><button onClick={() => this.moveBoard(Direction.up)}>U</button></div>
-              <div align="center"><button onClick={() => this.moveBoard(Direction.left)}>L</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button onClick={() => this.moveBoard(Direction.right)}>R</button></div>
-              <div align="center"><button onClick={() => this.moveBoard(Direction.down)}>D</button></div>
+              <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.up)}>U</button></div>
+              <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.left)}>L</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.right)}>R</button></div>
+              <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D</button></div>
 
           </p>
                     <button onClick={() => {
@@ -243,12 +243,10 @@ class App extends Component {
 
                     }}>UNLEASH THE DOOM!!!
                     </button>
-                    <button onClick={() => {
+                    <p><button onClick={() => {
                         this.nextTurn();
                     }}>Next turn
-                    </button>
-
-                    <p><button onClick={() => this.nextPlayer()}>Next player</button></p>
+                    </button></p>
                 </header>
             </div>
         );

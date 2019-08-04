@@ -156,48 +156,6 @@ function movePlayer (board, playerType, direction) {
     }
 
 
-function shovel (position, direction) {
- var shoveltile = {x:0, y:0};
-        if (direction===Direction.up){
-        shoveltile.x=position.x-1;
-            if(shoveltile.x<1){
-                shoveltile.x=0
-            }
-            shoveltile.y=position.y;
-
-            }
-    if (direction===Direction.down){
-        shoveltile.x=position.x+1;
-        if(shoveltile.x>3){
-            shoveltile.x=4
-        }
-        shoveltile.y=position.y;
-
-    }
-
-    if (direction===Direction.left){
-        shoveltile.y=position.y-1;
-        if(shoveltile.y<1){
-            shoveltile.y=0
-        }
-        shoveltile.x=position.x;
-
-    }
-
-    if (direction===Direction.right){
-        shoveltile.y=position.y+1;
-        if(shoveltile.y>3){
-            shoveltile.y=4
-        }
-        shoveltile.x=position.x;
-
-    }
-
-    board.posToTile(shoveltile).sand--;
-console.log("i shovevled");
-
-    }
-
 
 class CardDeck extends Component {
   
@@ -301,10 +259,10 @@ class App extends Component {
               <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D</button></div>
 
           </p> <p>
-                <button onClick={() => shovel(board.idToPos(11), Direction.up)}>Shovel up</button>
-                <button onClick={() => shovel(board.idToPos(11), Direction.down)}>Shovel down</button>
-                <button onClick={() => shovel(board.idToPos(11), Direction.left)}>Shovel left</button>
-                <button onClick={() => shovel(board.idToPos(11), Direction.right)}>Shovel right</button>
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].position), Direction.up)}>Shovel up</button>
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].position), Direction.down)}>Shovel down</button>
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].position), Direction.left)}>Shovel left</button>
+                <button onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].position), Direction.right)}>Shovel right</button>
 
             </p>
                     <button onClick={() => {
@@ -322,6 +280,53 @@ class App extends Component {
             </div>
         );
     }
+
+    shovel = (position, direction) => {
+        var shoveltile = {x:0, y:0};
+        if (direction===Direction.up){
+            shoveltile.x=position.x-1;
+            if(shoveltile.x<1){
+                shoveltile.x=0
+            }
+            shoveltile.y=position.y;
+
+        }
+        if (direction===Direction.down){
+            shoveltile.x=position.x+1;
+            if(shoveltile.x>3){
+                shoveltile.x=4
+            }
+            shoveltile.y=position.y;
+
+        }
+
+        if (direction===Direction.left){
+            shoveltile.y=position.y-1;
+            if(shoveltile.y<1){
+                shoveltile.y=0
+            }
+            shoveltile.x=position.x;
+
+        }
+
+        if (direction===Direction.right){
+            shoveltile.y=position.y+1;
+            if(shoveltile.y>3){
+                shoveltile.y=4
+            }
+            shoveltile.x=position.x;
+
+        }
+
+        console.log("shoveling ID " + shoveltile.x + "," + shoveltile.y);
+        let tile = this.state.board.posToTile(shoveltile);
+        console.log("current sand level: " + tile.sand);
+        tile.sand--;
+        if(tile.sand<0){tile.sand=0;}
+        console.log("and now current sand level: " + tile.sand);
+this.setState({board:this.state.board})
+    };
+
 
 
     moveBoard = (direction) => {

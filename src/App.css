@@ -36,3 +36,7 @@
   justify-content: space-between;
   column-gap: 30px;
 }
+
+.vertyflexy {
+  flex-direction: column;
+}

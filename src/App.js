@@ -166,7 +166,7 @@ class StormMeter extends Component {
 
 class PlayerView extends Component {
         render = () =>
-            <span> {this.props.player.type} is on tile ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
+            <span> {this.props.player.type}&rsquo;s position is ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
 }
 
     
@@ -178,16 +178,21 @@ class App extends Component {
             board: board,
             usedDeck: [],
             theDeck: startDeck,
-            lastCard: {magnitude: 20, direction: "nowhere"}
+            lastCard: {magnitude: 20, direction: "nowhere"},
+            currentPlayer: 0
         };
         this.players = [new PlayerCan()];
-        this.currentPlayer = 0;
     }
 
+  nextPlayer = () => {
+      this.setState({currentPlayer: 2});
+      console.log("Hello!");
+  }
 
   render() {
 
-      const moves = this.players[this.currentPlayer].canMove(board, board.storm);
+      const moves = PlayerList[this.state.currentPlayer].canMove(board, board.storm);
+      var players = ["Climber", "Explorer", "Archaeologist", "Water Carrier", "Navigator", "Meteorologist"];
       return (
       <div className="App">
         <header className="App-header">
@@ -196,20 +201,21 @@ class App extends Component {
             <div class="flexy">
                 <BoardView board={board} highlights={moves}/>
                 <CardDeck card={this.state.lastCard}/>
-                <StormMeter/><p>
-                <PlayerView player={Climber}/>
-                <PlayerView player={Explorer}/>
-                <PlayerView player={Archaeologist}/>
-                <PlayerView player={Watercarrier}/>
-                <PlayerView player={Navigator}/>
-                <PlayerView player={Meteorologist}/>
+                <StormMeter/><div className="vertyflexy"><p>
+                <PlayerView player={Climber}/>,
+                <PlayerView player={Explorer}/>,
+                <PlayerView player={Archaeologist}/>,
+                <PlayerView player={Watercarrier}/>,
+                <PlayerView player={Navigator}/>,
+                <PlayerView player={Meteorologist}/>.
                 </p>
+                <p><span>Current player: {PlayerList[this.state.currentPlayer].type}</span></p></div>
             </div>
           <p>
-              <button onClick={() => this.moveBoard(Direction.up)}>U</button>
-              <button onClick={() => this.moveBoard(Direction.down)}>D</button>
-              <button onClick={() => this.moveBoard(Direction.left)}>L</button>
-              <button onClick={() => this.moveBoard(Direction.right)}>R</button>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.up)}>U</button></div>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.left)}>L</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button onClick={() => this.moveBoard(Direction.right)}>R</button></div>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.down)}>D</button></div>
 
           </p>
   <button onClick={() => {
@@ -218,6 +224,7 @@ class App extends Component {
       }
 
   }}>UNLEASH THE DOOM!!!</button>
+  <p><button onClick={() => this.nextPlayer()}>Next player</button></p>
             {/*<img src={logo} className="App-logo" alt="logo" />*/}
         </header>
       </div>
@@ -241,8 +248,8 @@ class App extends Component {
             sleep(500).then(() => {});*/
         }
     };
-    
+    }
 
 export default App;
 
-          //bello!
+          //Rishi waz here!

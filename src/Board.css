@@ -27,3 +27,7 @@
     bottom: 10px;
     right: 2px;
 }
+
+button {
+    border-radius: 5px;
+}

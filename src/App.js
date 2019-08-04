@@ -162,7 +162,7 @@ class StormMeter extends Component {
 
 class PlayerView extends Component {
         render = () =>
-            <span> {this.props.player.type} is on tile ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
+            <span> {this.props.player.type}&rsquo;s position is ({board.idToPos(this.props.player.position).x},{board.idToPos(this.props.player.position).y})</span>
 }
 
 class WaterLevelView extends Component {
@@ -192,6 +192,11 @@ class App extends Component {
         this.setState({currentPlayer: newPlayerIndex});
     }
 
+  nextPlayer = () => {
+      this.setState({currentPlayer: 2});
+      console.log("Hello!");
+  }
+
     render() {
 
         const currentPlayer = this.state.players[this.state.currentPlayer];
@@ -202,31 +207,35 @@ class App extends Component {
                     <p>
                     </p>
                     <div class="flexy">
-                        <BoardView board={board} players={this.state.players} highlights={moves}/>
-                        <CardDeck card={this.state.lastCard}/>
-                        <StormMeter/><p>
+                <BoardView board={board} players={this.state.players} highlights={moves}/>
+                <CardDeck card={this.state.lastCard}/>
+                <StormMeter/>
 
-                        <PlayerView player={Climber}/>
-                        <PlayerView player={Explorer}/>
-                        <PlayerView player={Archaeologist}/>
-                        <PlayerView player={Watercarrier}/>
-                        <PlayerView player={Navigator}/>
-                        <PlayerView player={Meteorologist}/>
-                        <WaterLevelView player={Climber}/>
-                        <WaterLevelView player={Explorer}/>
-                        <WaterLevelView player={Archaeologist}/>
-                        <WaterLevelView player={Watercarrier}/>
-                        <WaterLevelView player={Navigator}/>
-                        <WaterLevelView player={Meteorologist}/>
-                    </p>
-                    </div>
-                    <p>
-                        <button onClick={() => this.movePlayer(currentPlayer, Direction.up)}>U</button>
-                        <button onClick={() => this.movePlayer(currentPlayer, Direction.down)}>D</button>
-                        <button onClick={() => this.movePlayer(currentPlayer, Direction.left)}>L</button>
-                        <button onClick={() => this.movePlayer(currentPlayer, Direction.right)}>R</button>
+                <div className="vertyflexy"><p>
+                <br/><PlayerView player={Climber}/>,
+                <br/><PlayerView player={Explorer}/>,
+                <br/><PlayerView player={Archaeologist}/>,
+                <br/><PlayerView player={Watercarrier}/>,
+                <br/><PlayerView player={Navigator}/>,
+                <br/><PlayerView player={Meteorologist}/>.
 
-                    </p>
+                    <br/><WaterLevelView player={Climber}/>
+                        <br/><WaterLevelView player={Explorer}/>
+                        <br/><WaterLevelView player={Archaeologist}/>
+                        <br/><WaterLevelView player={Watercarrier}/>
+                        <br/><WaterLevelView player={Navigator}/>
+                        <br/><WaterLevelView player={Meteorologist}/>
+                </p>
+                <p><span>Current player: {PlayerList[this.state.currentPlayer].type}</span></p>
+                </div>
+            </div>
+          <p>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.up)}>U</button></div>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.left)}>L</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button onClick={() => this.moveBoard(Direction.right)}>R</button></div>
+              <div align="center"><button onClick={() => this.moveBoard(Direction.down)}>D</button></div>
+
+          </p>
                     <button onClick={() => {
                         for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
                             this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
@@ -238,10 +247,13 @@ class App extends Component {
                         this.nextTurn();
                     }}>Next turn
                     </button>
+
+                    <p><button onClick={() => this.nextPlayer()}>Next player</button></p>
                 </header>
             </div>
         );
     }
+
 
     moveBoard = (direction) => {
         this.state.board.moveStorm(direction);
@@ -279,4 +291,4 @@ class App extends Component {
 
 export default App;
 
-          //bello!
+          //Rishi waz here!

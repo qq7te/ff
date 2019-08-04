@@ -17,13 +17,18 @@ class TileView extends Component
         const tile = this.props.tile;
         if (tile.sand === 1) img  = onesanded;
         if (tile.sand > 1) img = blocked;
-        if (tile.type !== "reg") img = me;
+        if (tile.type !== "reg") {
+            return (
+                <div/>
+            );
+        }
         let hasClimber = false;
         for (let player of this.props.players) {
             if (player.position === tile.id) {
                 hasClimber = true;
             }
         }
+
         return (
             <div class={this.props.hilight ? "hilight" :""}>
                 <img id={tile.id} src={img} width="90" alt={"hi"} />
@@ -58,6 +63,8 @@ var board = new Board();
     var Archaeologist = new Player ("Archaeologist", 1, [], 4, 4);
     var Navigator = new Player ("Navigator", 1,[], 3,3);
     var Meteorologist = new Player ("Meteorologist",1, [], 3,3);
+
+    var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
 
     class carta_normale {
         constructor (direction, magnitude) {
@@ -128,13 +135,29 @@ var stormLevel = 0;
     }
 
 class CardDeck extends Component {
+  
+  printDirection = function (dir){
+    if (dir == Direction.up) {
+      return("up");
+    }
+    if (dir == Direction.down) {
+      return("down");
+    }
+    if (dir == Direction.left) {
+      return("left");
+    }
+    if (dir == Direction.right) {
+      return("right");
+    }
+  }
+  
         render = () =>
-            <span> the last card was {this.props.card.magnitude} {this.props.card.direction} </span>
+            <span> The last card was {this.props.card.magnitude} {this.props.card.direction} </span>
     }
 
 class StormMeter extends Component {
         render = () =>
-            <span> Storm meter: {stormMeter[stormLevel]}</span>
+            <span><p> Storm meter: {stormMeter[stormLevel]}</p></span>
 }
 
 class PlayerView extends Component {
@@ -149,7 +172,7 @@ class WaterLevelView extends Component {
 
 class App extends Component {
 
-    constructor () {
+    constructor() {
         super();
         this.state = {
             board: board,
@@ -161,60 +184,64 @@ class App extends Component {
         };
     }
 
-    nextTurn (){
+    nextTurn() {
         let newPlayerIndex = this.state.currentPlayer + 1;
-        if (newPlayerIndex===this.state.players.length) {
+        if (newPlayerIndex === this.state.players.length) {
             newPlayerIndex = 0;
         }
         this.setState({currentPlayer: newPlayerIndex});
     }
 
-  render() {
+    render() {
 
-      const currentPlayer = this.state.players[this.state.currentPlayer];
-      const moves = currentPlayer.canMove(board, board.storm);
-      return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-          </p>
-            <div class="flexy">
-                <BoardView board={board} players={this.state.players} highlights={moves}/>
-                <CardDeck card={this.state.lastCard}/>
-                <StormMeter/><p>
+        const currentPlayer = this.state.players[this.state.currentPlayer];
+        const moves = currentPlayer.canMove(board, board.storm);
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <p>
+                    </p>
+                    <div class="flexy">
+                        <BoardView board={board} players={this.state.players} highlights={moves}/>
+                        <CardDeck card={this.state.lastCard}/>
+                        <StormMeter/><p>
 
-                <PlayerView player={Climber}/>
-                <PlayerView player={Explorer}/>
-                <PlayerView player={Archaeologist}/>
-                <PlayerView player={Watercarrier}/>
-                <PlayerView player={Navigator}/>
-                <PlayerView player={Meteorologist}/>
-                <WaterLevelView player={Climber}/>
-                <WaterLevelView player={Explorer}/>
-                <WaterLevelView player={Archaeologist}/>
-                <WaterLevelView player={Watercarrier}/>
-                <WaterLevelView player={Navigator}/>
-                <WaterLevelView player={Meteorologist}/>
-                </p>
+                        <PlayerView player={Climber}/>
+                        <PlayerView player={Explorer}/>
+                        <PlayerView player={Archaeologist}/>
+                        <PlayerView player={Watercarrier}/>
+                        <PlayerView player={Navigator}/>
+                        <PlayerView player={Meteorologist}/>
+                        <WaterLevelView player={Climber}/>
+                        <WaterLevelView player={Explorer}/>
+                        <WaterLevelView player={Archaeologist}/>
+                        <WaterLevelView player={Watercarrier}/>
+                        <WaterLevelView player={Navigator}/>
+                        <WaterLevelView player={Meteorologist}/>
+                    </p>
+                    </div>
+                    <p>
+                        <button onClick={() => this.movePlayer(currentPlayer, Direction.up)}>U</button>
+                        <button onClick={() => this.movePlayer(currentPlayer, Direction.down)}>D</button>
+                        <button onClick={() => this.movePlayer(currentPlayer, Direction.left)}>L</button>
+                        <button onClick={() => this.movePlayer(currentPlayer, Direction.right)}>R</button>
+
+                    </p>
+                    <button onClick={() => {
+                        for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
+                            this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
+                        }
+
+                    }}>UNLEASH THE DOOM!!!
+                    </button>
+                    <button onClick={() => {
+                        this.nextTurn();
+                    }}>Next turn
+                    </button>
+                </header>
             </div>
-          <p>
-              <button onClick={() => this.movePlayer(currentPlayer,Direction.up)}>U</button>
-              <button onClick={() => this.movePlayer(currentPlayer,Direction.down)}>D</button>
-              <button onClick={() => this.movePlayer(currentPlayer,Direction.left)}>L</button>
-              <button onClick={() => this.movePlayer(currentPlayer,Direction.right)}>R</button>
-
-          </p>
-  <button onClick={() => {
-      for(var i = 0; i<stormMeter[stormLevel]; i = i+1){
-          this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
-      }
-
-  }}>UNLEASH THE DOOM!!!</button>
-            <button onClick={() => {this.nextTurn();}}>Next turn</button>
-        </header>
-      </div>
-    );
-  }
+        );
+    }
 
     moveBoard = (direction) => {
         this.state.board.moveStorm(direction);
@@ -227,8 +254,7 @@ class App extends Component {
         const newpos = board.getNewCoordinates(pos, direction);
 
         const newtile = board.posToTile(newpos);
-        const newplayers = this.state.players.map((p) =>
-        {
+        const newplayers = this.state.players.map((p) => {
             if (p.type === player.type) {
                 p.position = newtile.id;
             }
@@ -240,8 +266,12 @@ class App extends Component {
     moveTheStorm = (carta) => {
         this.setState({theDeck: this.state.theDeck, usedDeck: this.state.usedDeck});
         this.setState({lastCard: carta});
-        for (var i=0; i<carta.magnitude; i++) {
+        for (var i = 0; i < carta.magnitude; i++) {
             this.moveBoard(carta.direction);
+            /*function sleep (time) {
+              return new Promise((resolve) => setTimeout(resolve, time));
+            }
+            sleep(500).then(() => {});*/
         }
     };
 

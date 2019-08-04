@@ -134,6 +134,71 @@ var stormLevel = 0;
        return pickedCard;
     }
 
+function movePlayer (board, playerType, direction) {
+       var playerX=board.idToPos(playerType.position).x;
+       var playerY=board.idToPos(playerType.position).y;
+
+        if (direction=="up"){
+            playerX=playerX-1;
+        }
+        else if (direction=="down"){
+            playerX=playerX+1;
+        }
+        else if (direction=="left"){
+            playerY=playerY-1;
+        }
+        else if (direction=="right"){
+            playerY=playerY+1;
+        } else {}
+
+    var tile = board.posToTile(playerX, playerY);
+     PlayerList[this.state.currentPlayer].position = tile;
+    }
+
+
+function shovel (position, direction) {
+ var shoveltile = {x:0, y:0};
+        if (direction===Direction.up){
+        shoveltile.x=position.x-1;
+            if(shoveltile.x<1){
+                shoveltile.x=0
+            }
+            shoveltile.y=position.y;
+
+            }
+    if (direction===Direction.down){
+        shoveltile.x=position.x+1;
+        if(shoveltile.x>3){
+            shoveltile.x=4
+        }
+        shoveltile.y=position.y;
+
+    }
+
+    if (direction===Direction.left){
+        shoveltile.y=position.y-1;
+        if(shoveltile.y<1){
+            shoveltile.y=0
+        }
+        shoveltile.x=position.x;
+
+    }
+
+    if (direction===Direction.right){
+        shoveltile.y=position.y+1;
+        if(shoveltile.y>3){
+            shoveltile.y=4
+        }
+        shoveltile.x=position.x;
+
+    }
+
+    board.posToTile(shoveltile).sand--;
+console.log("i shovevled");
+
+    }
+
+
 class CardDeck extends Component {
   
   printDirection = function (dir){
@@ -235,7 +300,13 @@ class App extends Component {
               <button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.right)}>R</button></div>
               <div align="center"><button onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D</button></div>
 
-          </p>
+          </p> <p>
+                <button onClick={() => shovel(board.idToPos(11), Direction.up)}>Shovel up</button>
+                <button onClick={() => shovel(board.idToPos(11), Direction.down)}>Shovel down</button>
+                <button onClick={() => shovel(board.idToPos(11), Direction.left)}>Shovel left</button>
+                <button onClick={() => shovel(board.idToPos(11), Direction.right)}>Shovel right</button>
+
+            </p>
                     <button onClick={() => {
                         for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
                             this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
@@ -278,10 +349,7 @@ class App extends Component {
         this.setState({lastCard: carta});
         for (var i = 0; i < carta.magnitude; i++) {
             this.moveBoard(carta.direction);
-            /*function sleep (time) {
-              return new Promise((resolve) => setTimeout(resolve, time));
-            }
-            sleep(500).then(() => {});*/
+            console.log ("doom has been unleashed. i pity you.");
         }
     };
 
@@ -290,3 +358,4 @@ class App extends Component {
 export default App;
 
           //Rishi waz here!
+      //DOOM HAS BEEN UNLEASHED. i pity you.

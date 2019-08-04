@@ -8,21 +8,16 @@ const Direction = Object.freeze({
 });
 
 
-
-class Tile
-{
-    constructor(id, type)
-    {
+class Tile {
+    constructor(id, type) {
         this.id = id;
         this.type = type;
         this.sand = 0;
     }
 }
 
-class Board
-{
-    constructor()
-    {
+class Board {
+    constructor() {
         this.storm = {x: 2, y: 2};
         this.tiles =
             [[
@@ -39,21 +34,21 @@ class Board
                 new Tile(13, "reg"),
                 new Tile(14, "reg")
 
-            ]            , [
+            ], [
                 new Tile(20, "reg"),
                 new Tile(21, "reg"),
                 new Tile(22, "mew"),
                 new Tile(23, "reg"),
                 new Tile(24, "reg")
 
-            ]            , [
+            ], [
                 new Tile(30, "reg"),
                 new Tile(31, "reg"),
                 new Tile(32, "reg"),
                 new Tile(33, "reg"),
                 new Tile(34, "reg")
 
-            ]            , [
+            ], [
                 new Tile(40, "reg"),
                 new Tile(41, "reg"),
                 new Tile(42, "reg"),
@@ -64,7 +59,7 @@ class Board
         this.size = this.tiles.length;
     }
 
-    getNewCoordinates (old_point, direction) {
+    getNewCoordinates(old_point, direction) {
         const x = old_point.x;
         const y = old_point.y;
         var point;
@@ -74,15 +69,15 @@ class Board
                 break;
             }
             case Direction.down: {
-                point = {x: Math.min( this.size -1, x + 1),  y: y};
+                point = {x: Math.min(this.size - 1, x + 1), y: y};
                 break;
             }
             case Direction.left: {
-                point = {x: x, y: Math.max(0, y-1)};
+                point = {x: x, y: Math.max(0, y - 1)};
                 break;
             }
             case Direction.right: {
-                point = {x: x, y : Math.min(this.size -1, y+1)};
+                point = {x: x, y: Math.min(this.size - 1, y + 1)};
                 break;
             }
             default:
@@ -92,8 +87,7 @@ class Board
     }
 
 
-    moveStorm (direction)
-    {
+    moveStorm(direction) {
         const x = this.storm.x;
         const y = this.storm.y;
         const newpoint = this.getNewCoordinates({x: x, y: y},
@@ -109,14 +103,11 @@ class Board
         this.storm = {x: newx, y: newy};
     }
 
-    idToPos = (id) =>
-    {
+    idToPos = (id) => {
         let x = 0;
-        for (let row of this.tiles)
-        {
+        for (let row of this.tiles) {
             let y = 0;
-            for (let cell of row)
-            {
+            for (let cell of row) {
                 if (cell.id === id) return {x: x, y: y};
                 y++;
             }
@@ -125,10 +116,10 @@ class Board
         throw {id: id, message: "Invalid tile ID!!"};
     };
 
-    posToTile = (pos) =>
-    {
+    posToTile = (pos) => {
         return this.tiles[pos.x][pos.y];
     }
 
 }
-export { Board, Direction, Tile };
+
+export {Board, Direction, Tile};

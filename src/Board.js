@@ -1,4 +1,5 @@
 import './Board.css';
+import ivybackground from "./ivybackground-ff-1.png"
 
 const Direction = Object.freeze({
     up: 'u',
@@ -9,10 +10,12 @@ const Direction = Object.freeze({
 
 
 class Tile {
-    constructor(id, type) {
+    constructor(id, type, tileImage) {
         this.id = id;
         this.type = type;
         this.sand = 0;
+        this.excavated = false;
+        this.image = tileImage;
     }
 }
 
@@ -21,39 +24,39 @@ class Board {
         this.storm = {x: 2, y: 2};
         this.tiles =
             [[
-                new Tile(0, "reg"),
-                new Tile(1, "reg"),
-                new Tile(2, "reg"),
-                new Tile(3, "reg"),
-                new Tile(4, "reg")
+                new Tile(0, "reg", ivybackground),
+                new Tile(1, "reg", ivybackground),
+                new Tile(2, "reg", ivybackground),
+                new Tile(3, "reg", ivybackground),
+                new Tile(4, "reg", ivybackground)
             ]
                 , [
-                new Tile(10, "reg"),
-                new Tile(11, "reg"),
-                new Tile(12, "reg"),
-                new Tile(13, "reg"),
-                new Tile(14, "reg")
+                new Tile(10, "reg", ivybackground),
+                new Tile(11, "reg", ivybackground),
+                new Tile(12, "reg", ivybackground),
+                new Tile(13, "reg", ivybackground),
+                new Tile(14, "reg", ivybackground)
 
             ], [
-                new Tile(20, "reg"),
-                new Tile(21, "reg"),
-                new Tile(22, "mew"),
-                new Tile(23, "reg"),
-                new Tile(24, "reg")
+                new Tile(20, "reg", ivybackground),
+                new Tile(21, "reg", ivybackground),
+                new Tile(22, "storm"),
+                new Tile(23, "reg", ivybackground),
+                new Tile(24, "reg", ivybackground)
 
             ], [
-                new Tile(30, "reg"),
-                new Tile(31, "reg"),
-                new Tile(32, "reg"),
-                new Tile(33, "reg"),
-                new Tile(34, "reg")
+                new Tile(30, "reg", ivybackground),
+                new Tile(31, "reg", ivybackground),
+                new Tile(32, "reg", ivybackground),
+                new Tile(33, "reg", ivybackground),
+                new Tile(34, "reg", ivybackground)
 
             ], [
-                new Tile(40, "reg"),
-                new Tile(41, "reg"),
-                new Tile(42, "reg"),
-                new Tile(43, "reg"),
-                new Tile(44, "reg")
+                new Tile(40, "reg", ivybackground),
+                new Tile(41, "reg", ivybackground),
+                new Tile(42, "reg", ivybackground),
+                new Tile(43, "reg", ivybackground),
+                new Tile(44, "reg", ivybackground)
 
             ]];
         this.size = this.tiles.length;

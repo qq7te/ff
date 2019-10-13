@@ -8,9 +8,10 @@ export class TileView extends Component {
     render() {
         let img = blackhat;
         const tile = this.props.tile;
+        img = tile.image;
         if (tile.sand === 1) img = onesanded;
         if (tile.sand > 1) img = blocked;
-        if (tile.type !== "reg") {
+        if (tile.type == "storm") {
             return (
                 <div/>
             );

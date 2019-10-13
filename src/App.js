@@ -226,6 +226,9 @@ class App extends Component {
                         </div>
 
                     </p>
+                    <p>
+                        <button onClick={() => {this.excavate()}}>Excavate</button>
+                    </p>
                     <button onClick={() => {
                         for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
                             this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
@@ -326,6 +329,13 @@ class App extends Component {
             console.log("doom has been unleashed. i pity you.");
         }
     };
+    
+    excavate = () => {
+        if (board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).sand === 0) {
+            board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).excavated = true;
+            console.log("A tile has been excavated! You're all going to die!");
+        }
+    }
 
 }
 

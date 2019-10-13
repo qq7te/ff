@@ -3,12 +3,15 @@ import blackhat from "../black-hat.png";
 import onesanded from "../one-sanded.png";
 import blocked from "../blocked.png";
 import green from "../green.png";
+import bear from "../bear-ff-2.png";
 
 export class TileView extends Component {
     render() {
         let img = blackhat;
         const tile = this.props.tile;
+
         img = tile.image;
+        if (tile.excavated === true) {img= bear};
         if (tile.sand === 1) img = onesanded;
         if (tile.sand > 1) img = blocked;
         if (tile.type == "storm") {

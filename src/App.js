@@ -333,6 +333,7 @@ class App extends Component {
     excavate = () => {
         if (board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).sand === 0) {
             board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).excavated = true;
+            this.setState({ board: this.state.board });
             console.log("A tile has been excavated! You're all going to die!");
         }
     }

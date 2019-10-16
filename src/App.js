@@ -115,6 +115,35 @@ export class StormMeter extends Component {
         <span><p> Storm meter: {stormMeter[stormLevel]}</p></span>
 }
 
+
+class Brainz {
+    constructor (playerNameList){
+
+        this.currentPlayerIndex = 0;
+        this.numberOfMoves = 4;
+        this.playerNameList = playerNameList;
+
+    }
+
+    decreaseNumberOfMoves = () => {
+
+        this.numberOfMoves = this.numberOfMoves -1;
+        if (this.numberOfMoves === 0) {
+
+            this.currentPlayerIndex = this.currentPlayerIndex +1;
+            this.numberOfMoves = 4;
+            if (this.currentPlayerIndex === this.currentPlayerIndex.length){
+
+                this.currentPlayerIndex = 0;
+
+            }
+
+        }
+
+    }
+}
+
+
 class App extends Component {
 
     constructor() {

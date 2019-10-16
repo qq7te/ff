@@ -11,7 +11,7 @@ export class TileView extends Component {
         const tile = this.props.tile;
 
         img = tile.image;
-        if (tile.excavated === true) {img= bear};
+        if (tile.excavated === true) {img= tile.eximage};
         if (tile.sand === 1) img = onesanded;
         if (tile.sand > 1) img = blocked;
         if (tile.type == "storm") {

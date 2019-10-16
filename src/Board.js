@@ -21,44 +21,65 @@ class Tile {
     }
 }
 
+const TileType = Object.freeze({
+
+    well: 0,
+    mirage: 1,
+    onlygear: 2,
+    grayColumn: 3,
+    grayRow: 4,
+    redColumn: 5,
+    redRow: 6,
+    orangeColumn: 7,
+    orangeRow: 8,
+    yellowColumn: 9,
+    yellowRow: 10,
+    tunnel: 11,
+    launchpad: 12,
+    crashsite: 13,
+
+
+})
+
 class Board {
     constructor() {
         this.storm = {x: 2, y: 2};
         this.tiles =
             [[
-                new Tile(0, "reg", ivybackground, bear),
-                new Tile(1, "reg", ivybackground, bear),
-                new Tile(2, "reg", ivybackground, bear),
-                new Tile(3, "reg", ivybackground, bear),
-                new Tile(4, "reg", ivybackground, bear)
+                new Tile(0, TileType.well, ivybackground, bear),
+                new Tile(1, TileType.well, ivybackground, bear),
+                new Tile(2, TileType.mirage, ivybackground, bear),
+                new Tile(3, TileType.launchpad, ivybackground, bear),
+                new Tile(4, TileType.crashsite, ivybackground, bear)
             ]
                 , [
-                new Tile(10, "reg", ivybackground,bear),
-                new Tile(11, "reg", ivybackground,bear),
-                new Tile(12, "reg", ivybackground,bear),
-                new Tile(13, "reg", ivybackground,bear),
-                new Tile(14, "reg", ivybackground,bear)
+                new Tile(10, TileType.onlygear, ivybackground,bear),
+                new Tile(11, TileType.onlygear, ivybackground,bear),
+                new Tile(12, TileType.onlygear, ivybackground,bear),
+                new Tile(13, TileType.onlygear, ivybackground,bear),
+                new Tile(14, TileType.onlygear, ivybackground,bear)
 
             ], [
-                new Tile(20, "reg", ivybackground, bear),
-                new Tile(21, "reg", ivybackground, bear),
+                new Tile(20, TileType.onlygear, ivybackground, bear),
+                new Tile(21, TileType.onlygear, ivybackground, bear),
                 new Tile(22, "storm"),
-                new Tile(23, "reg", ivybackground, bear),
-                new Tile(24, "reg", ivybackground, bear)
+                new Tile(23, TileType.onlygear, ivybackground, bear),
+                new Tile(24, TileType.tunnel, ivybackground, bear)
 
             ], [
-                new Tile(30, "reg", ivybackground, bear),
-                new Tile(31, "reg", ivybackground, bear),
-                new Tile(32, "reg", ivybackground, bear),
-                new Tile(33, "reg", ivybackground, bear),
-                new Tile(34, "reg", ivybackground, bear)
+                new Tile(30, TileType.tunnel, ivybackground, bear),
+                new Tile(31, TileType.tunnel, ivybackground, bear),
+                new Tile(33, TileType.redColumn, ivybackground, bear),
+                new Tile(34, TileType.redRow, ivybackground, bear),
+                new Tile(35, TileType.orangeColumn, ivybackground, bear)
 
             ], [
-                new Tile(40, "reg", ivybackground, bear),
-                new Tile(41, "reg", ivybackground, bear),
-                new Tile(42, "reg", ivybackground, bear),
-                new Tile(43, "reg", ivybackground, bear),
-                new Tile(44, "reg", ivybackground, bear)
+
+                new Tile(40, TileType.orangeRow, ivybackground, bear),
+                new Tile(41, TileType.yellowColumn, ivybackground, bear),
+                new Tile(42, TileType.yellowRow, ivybackground, bear),
+                new Tile(43, TileType.grayColumn, ivybackground, bear),
+                new Tile(44, TileType.grayRow, ivybackground, bear)
 
             ]];
         this.size = this.tiles.length;

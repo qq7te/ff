@@ -117,27 +117,52 @@ export class StormMeter extends Component {
 
 
 class Brainz {
-    constructor (playerNameList){
+    constructor(playerObjectList) {
 
         this.currentPlayerIndex = 0;
         this.numberOfMoves = 4;
-        this.playerNameList = playerNameList;
+        this.playerObjectList = playerObjectList;
 
     }
 
+    currentPlayer = () => {
+
+        return this.playerObjectList[this.currentPlayerIndex];
+
+    };
+
+
+    movePlayer = (direction) => {
+
+        const pos = this.state.board.idToPos(currentPlayer().tileID);
+        const newpos = board.getNewCoordinates(pos, direction);
+
+        const newtile = board.posToTile(newpos);
+        const potentialTileIDs = this.currentPlayer().canMove(board, pos);
+        if (potentialTileIDs.contains(newtile.id)) {
+            this.currentPlayer().tileID = newtile.id;
+            this.decreaseNumberOfMoves();
+        }
+    }
+
+    nextplayer = () => {
+
+        this.currentPlayerIndex = this.currentPlayerIndex + 1;
+        this.numberOfMoves = 4;
+        if (this.currentPlayerIndex === this.playerObjectList.length) {
+
+            this.currentPlayerIndex = 0;
+
+        }
+
+
+    };
+
     decreaseNumberOfMoves = () => {
 
-        this.numberOfMoves = this.numberOfMoves -1;
+        this.numberOfMoves = this.numberOfMoves - 1;
         if (this.numberOfMoves === 0) {
-
-            this.currentPlayerIndex = this.currentPlayerIndex +1;
-            this.numberOfMoves = 4;
-            if (this.currentPlayerIndex === this.currentPlayerIndex.length){
-
-                this.currentPlayerIndex = 0;
-
-            }
-
+            nextplayer();
         }
 
     }

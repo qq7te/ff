@@ -36,6 +36,9 @@ class Player {
         this.water_level = water_level;
     }
 
+
+    // not true or false, instead gives a list of tile ids you can move to
+
     canMove = (board, currentPos) => {
         let potentials = [
             {x: currentPos.x - 1, y: currentPos.y},  // up

@@ -134,7 +134,7 @@ class Brainz {
 
     movePlayer = (direction) => {
 
-        const pos = this.state.board.idToPos(currentPlayer().tileID);
+        const pos = this.state.board.idToPos(this.currentPlayer().tileID);
         const newpos = board.getNewCoordinates(pos, direction);
 
         const newtile = board.posToTile(newpos);
@@ -162,7 +162,7 @@ class Brainz {
 
         this.numberOfMoves = this.numberOfMoves - 1;
         if (this.numberOfMoves === 0) {
-            nextplayer();
+            this.nextplayer();
         }
 
     }

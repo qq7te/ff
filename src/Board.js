@@ -9,6 +9,12 @@ const Direction = Object.freeze({
     right: 'r'
 });
 
+const Artifact = Object.freeze({
+    red: 'r',
+    orange: 'o',
+    yellow: 'y',
+    grey: 'g'
+});
 
 class Tile {
     constructor(id, type, tileImage, eximage) {
@@ -37,6 +43,7 @@ const TileType = Object.freeze({
     tunnel: 11,
     launchpad: 12,
     crashsite: 13,
+    storm: 14,
 
 
 })
@@ -62,7 +69,7 @@ class Board {
             ], [
                 new Tile(20, TileType.onlygear, ivybackground, bear),
                 new Tile(21, TileType.onlygear, ivybackground, bear),
-                new Tile(22, "storm"),
+                new Tile(22, TileType.storm),
                 new Tile(23, TileType.onlygear, ivybackground, bear),
                 new Tile(24, TileType.tunnel, ivybackground, bear)
 
@@ -146,6 +153,28 @@ class Board {
         return this.tiles[pos.x][pos.y];
     }
 
+    findRedArtifact = () => {
+        return this.tiles[this.idToPos(33).x][this.idToPos(34).y];
+    }
+
+    findArtifact = (artifact) => {
+        if (artifact === Artifact.red) {
+            return this.tiles[this.idToPos(33).x][this.idToPos(34).y];
+        }
+
+        if (artifact === Artifact.orange) {
+            return this.tiles[this.idToPos(35).x][this.idToPos(40).y];
+        }
+
+        if (artifact === Artifact.yellow) {
+            return this.tiles[this.idToPos(41).x][this.idToPos(42).y];
+        }
+
+        if (artifact === Artifact.grey) {
+            return this.tiles[this.idToPos(43).x][this.idToPos(44).y];
+        }
+    }
+
 }
 
-export {Board, Direction, Tile};
+export {Board, Direction, Tile, TileType, Artifact};

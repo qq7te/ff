@@ -1,3 +1,4 @@
+import {board, TileType} from './Board.js'
 //bool
 const isValid = (pos) => {
     if (pos.x > 4 || pos.x < 0) return false;
@@ -5,8 +6,13 @@ const isValid = (pos) => {
     return true;
 };
 
+const isStorm = (board) => {
+    return (pos) => {
+        if (board.posToTile(pos).type === TileType.storm) return false;
+    };
+};
 
-class Player2 {
+/*class Player2 {
 
     canMove = (board, currentPos) => {
 
@@ -25,7 +31,7 @@ class Player2 {
         }
         return array;
     };
-}
+}*/
 
 class Player {
     constructor(type, tileID, gear_cards, water_size, water_level) {
@@ -49,6 +55,7 @@ class Player {
 
         const good = potentials
             .filter(isValid)
+            .filter(isStorm(board))
             .map(board.posToTile)
             .map((tile) => {
                 return tile.id;

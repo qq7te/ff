@@ -4,7 +4,7 @@ import {Artifact, Board, Direction} from './Board.js';
 import Player from "./Players";
 import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
-
+import {carta_normale, carta_speciale} from "./Deck"
 
 var initial_board = new Board();
 
@@ -15,19 +15,6 @@ var Archaeologist = new Player("Archaeologist", 1, [], 3, 3);
 var Navigator = new Player("Navigator", 1, [], 4, 4);
 var Meteorologist = new Player("Meteorologist", 1, [], 4, 4);
 
-
-class carta_normale {
-    constructor(direction, magnitude) {
-        this.direction = direction;
-        this.magnitude = magnitude;
-    }
-}
-
-class carta_speciale {
-    constructor(tipo) {
-        this.tipo = tipo;
-    }
-}
 
 
 var startDeck = [
@@ -59,20 +46,6 @@ var stormMeters = [[],[],[2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
     [2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7]];
 var stormLevel = 0;
 
-
-function pickCard(deck1, deck2) {
-    console.log("the deck has " + deck1.length + " cards!");
-    var index = Math.floor(Math.random() * deck1.length);
-    var pickedCard = deck1[index];
-    deck2.push(pickedCard);
-    deck1.splice(index, 1);
-    if (deck1.length === 0) {
-        deck1.push(...deck2);
-        deck2.splice(0, deck2.length);
-        console.log("the deck ... now ...  has " + deck1.length + " cards!");
-    }
-    return pickedCard;
-}
 
 class PlayerView extends Component {
     render = () =>

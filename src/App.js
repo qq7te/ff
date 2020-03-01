@@ -6,7 +6,7 @@ import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
 
 
-var board = new Board();
+var initial_board = new Board();
 
 var Climber = new Player("Climber", 1, [], 3, 3);
 var Watercarrier = new Player("Watercarrier", 1, [], 5, 5);
@@ -15,7 +15,7 @@ var Archaeologist = new Player("Archaeologist", 1, [], 3, 3);
 var Navigator = new Player("Navigator", 1, [], 4, 4);
 var Meteorologist = new Player("Meteorologist", 1, [], 4, 4);
 
-var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
+// var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
 
 class carta_normale {
     constructor(direction, magnitude) {
@@ -56,16 +56,13 @@ var stormMeter = [2, 3, 4, 5, 6];
 var stormLevel = 0;
 
 
-function checkCard(pickedCard) {
+function checkCard(pickedCard, modifiablePlayerList) {
     if (pickedCard instanceof carta_speciale) {
         if (pickedCard.tipo === "WindPU") {
             stormLevel = stormLevel + 1;
         }
         if (pickedCard.tipo === "SunBD") {
-            var i;
-            for (i = 0; i < PlayerList.length; i++) {
-                PlayerList[i].water_level = PlayerList[i].water_level - 1
-            }
+            modifiablePlayerList.map((player)=>{player.water_level--; return player});
         }
     }
 }
@@ -81,33 +78,12 @@ function pickCard(deck1, deck2) {
         deck2.splice(0, deck2.length);
         console.log("the deck ... now ...  has " + deck1.length + " cards!");
     }
-    checkCard(pickedCard);
     return pickedCard;
 }
 
-function movePlayer(board, playerType, direction) {
-    var playerX = board.idToPos(playerType.tileID).x;
-    var playerY = board.idToPos(playerType.tileID).y;
-
-    if (direction == "up") {
-        playerX = playerX - 1;
-    } else if (direction == "down") {
-        playerX = playerX + 1;
-    } else if (direction == "left") {
-        playerY = playerY - 1;
-    } else if (direction == "right") {
-        playerY = playerY + 1;
-    } else {
-    }
-
-    var tile = board.posToTile(playerX, playerY);
-    PlayerList[this.state.currentPlayer].tileID = tile;
-}
-
-
 class PlayerView extends Component {
     render = () =>
-        <span> {this.props.player.type}&rsquo;s position is ({board.idToPos(this.props.player.tileID).x},{board.idToPos(this.props.player.tileID).y})</span>
+        <span> {this.props.player_type}&rsquo;s position is ({this.props.pos.x}, {this.props.pos.y})</span>
 }
 
 export class StormMeter extends Component {
@@ -118,7 +94,7 @@ export class StormMeter extends Component {
 
 class Brainz {
     constructor(playerObjectList) {
-
+        this.board = new Board();
         this.currentPlayerIndex = 0;
         this.numberOfMoves = 4;
         this.playerObjectList = playerObjectList;
@@ -133,17 +109,16 @@ class Brainz {
 
 
     movePlayer = (direction) => {
+        const pos = this.board.idToPos(this.currentPlayer().tileID);
+        const newpos = this.board.getNewCoordinates(pos, direction);
 
-        const pos = this.state.board.idToPos(this.currentPlayer().tileID);
-        const newpos = board.getNewCoordinates(pos, direction);
-
-        const newtile = board.posToTile(newpos);
-        const potentialTileIDs = this.currentPlayer().canMove(board, pos);
-        if (potentialTileIDs.contains(newtile.id)) {
+        const newtile = this.board.posToTile(newpos);
+        const potentialTileIDs = this.currentPlayer().canMove(this.board, pos);
+        if (potentialTileIDs.includes(newtile.id)) {
             this.currentPlayer().tileID = newtile.id;
             this.decreaseNumberOfMoves();
         }
-    }
+    };
 
     nextplayer = () => {
 
@@ -173,8 +148,9 @@ class App extends Component {
 
     constructor() {
         super();
+        this.brainz = new Brainz([Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist]);
         this.state = {
-            board: board,
+            board: initial_board,
             usedDeck: [],
             theDeck: startDeck,
             lastCard: {magnitude: 20, direction: "nowhere"},
@@ -191,32 +167,28 @@ class App extends Component {
         this.setState({currentPlayer: newPlayerIndex});
     }
 
-    nextPlayer = () => {
-        this.setState({currentPlayer: 2});
-        console.log("Hello!");
-    }
-
     render() {
 
-        const currentPlayer = this.state.players[this.state.currentPlayer];
-        const moves = currentPlayer.canMove(board, board.storm);
+        const currentPlayer = this.brainz.currentPlayer();//.state.players[this.state.currentPlayer];
+        const playerPosition = this.state.board.idToPos(currentPlayer.tileID);
+        const moves = currentPlayer.canMove(this.state.board, this.state.board.storm);
         return (
             <div className="App">
                 <header className="App-header">
                     <p>
                     </p>
                     <div class="flexy">
-                        <BoardView board={board} players={this.state.players} highlights={moves}/>
+                        <BoardView board={this.state.board} players={this.brainz.playerObjectList} highlights={moves}/>
                         <CardDeck card={this.state.lastCard}/>
                         <StormMeter/>
 
                         <div className="vertyflexy"><p>
-                            <br/><PlayerView player={Climber}/>,
-                            <br/><PlayerView player={Explorer}/>,
-                            <br/><PlayerView player={Archaeologist}/>,
-                            <br/><PlayerView player={Watercarrier}/>,
-                            <br/><PlayerView player={Navigator}/>,
-                            <br/><PlayerView player={Meteorologist}/>.
+                            <br/><PlayerView player_type={Climber.type} pos={this.state.board.idToPos(Climber.tileID)}/>,
+                            <br/><PlayerView player_type={Explorer.type} pos={this.state.board.idToPos(Explorer.tileID)}/>,
+                            <br/><PlayerView player_type={Archaeologist.type} pos={this.state.board.idToPos(Archaeologist.tileID)}/>,
+                            <br/><PlayerView player_type={Watercarrier.type} pos={this.state.board.idToPos(Watercarrier.tileID)}/>,
+                            <br/><PlayerView player_type={Navigator.type} pos={this.state.board.idToPos(Navigator.tileID)}/>,
+                            <br/><PlayerView player_type={Meteorologist.type} pos={this.state.board.idToPos(Meteorologist.tileID)}/>.
 
                             <br/><WaterLevelView player={Climber}/>
                             <br/><WaterLevelView player={Explorer}/>
@@ -225,56 +197,56 @@ class App extends Component {
                             <br/><WaterLevelView player={Navigator}/>
                             <br/><WaterLevelView player={Meteorologist}/>
                         </p>
-                            <p><span>Current player: {PlayerList[this.state.currentPlayer].type}</span></p>
+                            <p><span>Current player: {this.brainz.currentPlayer().type}</span></p>
                         </div>
                     </div>
                     <p>
                         <div align="center">
                             <button
-                                onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.up)}>U
+                                onClick={() => this.movePlayer(Direction.up)}>U
                             </button>
                         </div>
                         <div align="center">
                             <button
-                                onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.left)}>L
+                                onClick={() => this.movePlayer(Direction.left)}>L
                             </button>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <button
-                                onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.right)}>R
+                                onClick={() => this.movePlayer(Direction.right)}>R
                             </button>
                         </div>
                         <div align="center">
                             <button
-                                onClick={() => this.movePlayer(PlayerList[this.state.currentPlayer], Direction.down)}>D
+                                onClick={() => this.movePlayer(Direction.down)}>D
                             </button>
                         </div>
                         <br/>
                         <br/>
                         <div align="center">
                             <button
-                                onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.up)}>Shovel
+                                onClick={() => this.shovel(this.state.board.idToPos(this.brainz.currentPlayer().tileID), Direction.up)}>Shovel
                                 up
                             </button>
                         </div>
                         <div align="center">
                             <button
-                                onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.left)}>Shovel
+                                onClick={() => this.shovel(this.state.board.idToPos(this.brainz.currentPlayer().tileID), Direction.left)}>Shovel
                                 left
                             </button>
                             &nbsp;
                             <button
-                                onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), "already here")}>Shovel
+                                onClick={() => this.shovel(this.state.board.idToPos(this.brainz.currentPlayer().tileID), "already here")}>Shovel
                                 in place
                             </button>
                             &nbsp;
                             <button
-                                onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.right)}>Shovel
+                                onClick={() => this.shovel(this.state.board.idToPos(this.brainz.currentPlayer().tileID), Direction.right)}>Shovel
                                 right
                             </button>
                         </div>
                         <div align="center">
                             <button
-                                onClick={() => this.shovel(board.idToPos(PlayerList[this.state.currentPlayer].tileID), Direction.down)}>Shovel
+                                onClick={() => this.shovel(this.state.board.idToPos(this.brainz.currentPlayer().tileID), Direction.down)}>Shovel
                                 down
                             </button>
                         </div>
@@ -285,7 +257,9 @@ class App extends Component {
                     </p>
                     <button onClick={() => {
                         for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
-                            this.moveTheStorm(pickCard(this.state.theDeck, this.state.usedDeck))
+                            const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
+                            checkCard(pickedCard, this.brainz.playerObjectList);
+                            this.moveTheStorm(pickedCard)
                         }
 
                     }}>UNLEASH THE DOOM!!!
@@ -366,19 +340,9 @@ class App extends Component {
         this.setState({board: this.state.board});
     };
 
-    movePlayer = (player, direction) => {
-
-        const pos = this.state.board.idToPos(player.tileID);
-        const newpos = board.getNewCoordinates(pos, direction);
-
-        const newtile = board.posToTile(newpos);
-        const newplayers = this.state.players.map((p) => {
-            if (p.type === player.type) {
-                p.tileID = newtile.id;
-            }
-            return p;
-        });
-        this.setState({players: newplayers});
+    movePlayer = (direction) => {
+        this.brainz.movePlayer(direction);
+        this.setState({players: this.brainz.playerObjectList});
     };
 
     moveTheStorm = (carta) => {
@@ -391,8 +355,8 @@ class App extends Component {
     };
     
     excavate = () => {
-        if (board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).sand === 0) {
-            board.posToTile(board.idToPos(PlayerList[this.state.currentPlayer].tileID)).excavated = true;
+        if (this.state.board.posToTile(this.state.board.idToPos(this.brainz.currentPlayer().tileID)).sand === 0) {
+            this.state.board.posToTile(this.state.board.idToPos(this.brainz.currentPlayer().tileID)).excavated = true;
             this.setState({ board: this.state.board });
             console.log("A tile has been excavated! You're all going to die!");
         }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Board, Direction, Artifact} from './Board.js';
+import {Artifact, Board, Direction} from './Board.js';
 import Player from "./Players";
 import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
@@ -188,7 +188,7 @@ class App extends Component {
                 <header className="App-header">
                     <p>
                     </p>
-                    <div class="flexy">
+                    <div className="flexy">
                         <BoardView board={this.state.board} players={this.brainz.playerObjectList} highlights={moves}/>
                         <CardDeck card={this.state.lastCard}/>
                         <StormMeter stormPiggy={stormMeters[this.brainz.playerObjectList.length][stormLevel]}/>
@@ -211,7 +211,7 @@ class App extends Component {
                             <p><span>Current player: {this.brainz.currentPlayer().type}</span></p>
                         </div>
                     </div>
-                    <p>
+                    <p/>
                         <div align="center">
                             <button
                                 onClick={() => this.movePlayer(Direction.up)}>U
@@ -262,7 +262,7 @@ class App extends Component {
                             </button>
                         </div>
 
-                    </p>
+
                     <p>
                         <button onClick={() => {this.excavate()}}>Excavate</button>
                     </p>

@@ -28,7 +28,7 @@ export class TileView extends Component {
         }
 
         return (
-            <div class={this.props.hilight ? "hilight" : ""}>
+            <div className={this.props.hilight ? "hilight" : ""}>
                 <img id={tile.id} src={img} width="90" alt={"hi"}/>
                 {
                     hasClimber ? (

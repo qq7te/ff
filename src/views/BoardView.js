@@ -3,7 +3,7 @@ import {TileView} from "./TileView";
 
 export class BoardView extends Component {
     render = () =>
-        <div class={"grid-container"}>
+        <div className={"grid-container"}>
             {this.props.board.tiles.map((row) =>
                 row.map((tile) =>
                     <TileView players={this.props.players} hilight={this.props.highlights.indexOf(tile.id) > -1}

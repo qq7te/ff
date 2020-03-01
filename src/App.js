@@ -15,7 +15,6 @@ var Archaeologist = new Player("Archaeologist", 1, [], 3, 3);
 var Navigator = new Player("Navigator", 1, [], 4, 4);
 var Meteorologist = new Player("Meteorologist", 1, [], 4, 4);
 
-// var PlayerList = [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist];
 
 class carta_normale {
     constructor(direction, magnitude) {
@@ -56,17 +55,6 @@ var stormMeter = [2, 3, 4, 5, 6];
 var stormLevel = 0;
 
 
-function checkCard(pickedCard, modifiablePlayerList) {
-    if (pickedCard instanceof carta_speciale) {
-        if (pickedCard.tipo === "WindPU") {
-            stormLevel = stormLevel + 1;
-        }
-        if (pickedCard.tipo === "SunBD") {
-            modifiablePlayerList.map((player)=>{player.water_level--; return player});
-        }
-    }
-}
-
 function pickCard(deck1, deck2) {
     console.log("the deck has " + deck1.length + " cards!");
     var index = Math.floor(Math.random() * deck1.length);
@@ -93,12 +81,12 @@ export class StormMeter extends Component {
 
 
 class Brainz {
-    constructor(playerObjectList) {
+    constructor(playerObjectList, app) {
         this.board = new Board();
         this.currentPlayerIndex = 0;
         this.numberOfMoves = 4;
         this.playerObjectList = playerObjectList;
-
+        this.callbackApp = app;
     }
 
     currentPlayer = () => {
@@ -127,9 +115,13 @@ class Brainz {
         if (this.currentPlayerIndex === this.playerObjectList.length) {
 
             this.currentPlayerIndex = 0;
-
         }
 
+    };
+
+    nextturn = () => {
+        this.nextplayer();
+        this.callbackApp.app_moves_things();
 
     };
 
@@ -137,7 +129,7 @@ class Brainz {
 
         this.numberOfMoves = this.numberOfMoves - 1;
         if (this.numberOfMoves === 0) {
-            this.nextplayer();
+            this.nextturn();
         }
 
     }
@@ -148,7 +140,7 @@ class App extends Component {
 
     constructor() {
         super();
-        this.brainz = new Brainz([Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist]);
+        this.brainz = new Brainz([Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist], this);
         this.state = {
             board: initial_board,
             usedDeck: [],
@@ -159,13 +151,27 @@ class App extends Component {
         };
     }
 
-    nextTurn() {
-        let newPlayerIndex = this.state.currentPlayer + 1;
-        if (newPlayerIndex === this.state.players.length) {
-            newPlayerIndex = 0;
+    app_moves_things = () => {
+        const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
+        this.handleCard(pickedCard, this.brainz.playerObjectList);
+        this.moveTheStorm(pickedCard)
+
+    };
+
+    handleCard = (pickedCard, modifiablePlayerList) => {
+        if (pickedCard instanceof carta_speciale) {
+            if (pickedCard.tipo === "WindPU") {
+                stormLevel = stormLevel + 1;
+            }
+            if (pickedCard.tipo === "SunBD") {
+                modifiablePlayerList.map((player) => {
+                    player.water_level--;
+                    return player
+                });
+            }
         }
-        this.setState({currentPlayer: newPlayerIndex});
-    }
+    };
+
 
     render() {
 
@@ -254,21 +260,6 @@ class App extends Component {
                     </p>
                     <p>
                         <button onClick={() => {this.excavate()}}>Excavate</button>
-                    </p>
-                    <button onClick={() => {
-                        for (var i = 0; i < stormMeter[stormLevel]; i = i + 1) {
-                            const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
-                            checkCard(pickedCard, this.brainz.playerObjectList);
-                            this.moveTheStorm(pickedCard)
-                        }
-
-                    }}>UNLEASH THE DOOM!!!
-                    </button>
-                    <p>
-                        <button onClick={() => {
-                            this.nextTurn();
-                        }}>Next turn
-                        </button>
                     </p>
                 </header>
             </div>

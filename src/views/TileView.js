@@ -4,6 +4,7 @@ import onesanded from "../one-sanded.png";
 import blocked from "../blocked.png";
 import green from "../green.png";
 import bear from "../bear-ff-2.png";
+import {TileType} from "../Board.js"
 
 export class TileView extends Component {
     render() {
@@ -14,7 +15,7 @@ export class TileView extends Component {
         if (tile.excavated === true) {img= tile.eximage};
         if (tile.sand === 1) img = onesanded;
         if (tile.sand > 1) img = blocked;
-        if (tile.type == "storm") {
+        if (tile.type === TileType.storm) {
             return (
                 <div/>
             );

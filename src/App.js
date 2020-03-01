@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Board, Direction} from './Board.js';
+import {Board, Direction, Artifact} from './Board.js';
 import Player from "./Players";
 import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
@@ -261,6 +261,12 @@ class App extends Component {
                     <p>
                         <button onClick={() => {this.excavate()}}>Excavate</button>
                     </p>
+                    <p>
+                        <button onClick={() => {
+                            console.log(this.brainz.board.findArtifact(Artifact.red));
+                        }}>find red artifact
+                        </button>
+                    </p>
                 </header>
             </div>
         );
@@ -345,7 +351,7 @@ class App extends Component {
             this.setState({ board: this.state.board });
             console.log("A tile has been excavated! You're all going to die!");
         }
-    }
+    };
 
 }
 

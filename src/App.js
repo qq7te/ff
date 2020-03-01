@@ -333,7 +333,7 @@ class App extends Component {
 
     movePlayer = (direction) => {
         this.brainz.movePlayer(direction);
-        this.setState({players: this.brainz.playerObjectList});
+        this.setState({board:this.state.board, players: this.brainz.playerObjectList});
     };
 
     moveTheStorm = (carta) => {

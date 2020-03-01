@@ -51,7 +51,12 @@ var startDeck = [
     new carta_speciale("SunBD")
 ];
 
-var stormMeter = [2, 3, 4, 5, 6];
+var stormMeter = [2, 3, 4, 5, 6, 7];
+var stormMeters = [[],[],[2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
+    [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
+    [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
+    [2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
+    [2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7]];
 var stormLevel = 0;
 
 
@@ -76,7 +81,7 @@ class PlayerView extends Component {
 
 export class StormMeter extends Component {
     render = () =>
-        <span><p> Storm meter: {stormMeter[stormLevel]}</p></span>
+        <span><p> Storm meter: {this.props.stormPiggy}</p></span>
 }
 
 
@@ -186,7 +191,7 @@ class App extends Component {
                     <div class="flexy">
                         <BoardView board={this.state.board} players={this.brainz.playerObjectList} highlights={moves}/>
                         <CardDeck card={this.state.lastCard}/>
-                        <StormMeter/>
+                        <StormMeter stormPiggy={stormMeters[this.brainz.playerObjectList.length][stormLevel]}/>
 
                         <div className="vertyflexy"><p>
                             <br/><PlayerView player_type={Climber.type} pos={this.state.board.idToPos(Climber.tileID)}/>,

@@ -94,6 +94,10 @@ class Brainz {
         this.callbackApp = app;
     }
 
+    currentStormLevel = () => {
+        return stormMeters[this.playerObjectList.length][stormLevel];
+    }
+
     currentPlayer = () => {
 
         return this.playerObjectList[this.currentPlayerIndex];
@@ -157,9 +161,11 @@ class App extends Component {
     }
 
     app_moves_things = () => {
-        const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
-        this.handleCard(pickedCard, this.brainz.playerObjectList);
-        this.moveTheStorm(pickedCard)
+        for (var i = 0; i < this.brainz.currentStormLevel(); i++) {
+            const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
+            this.handleCard(pickedCard, this.brainz.playerObjectList);
+            this.moveTheStorm(pickedCard);
+        }
 
     };
 
@@ -183,6 +189,7 @@ class App extends Component {
         const currentPlayer = this.brainz.currentPlayer();//.state.players[this.state.currentPlayer];
         const playerPosition = this.state.board.idToPos(currentPlayer.tileID);
         const moves = currentPlayer.canMove(this.state.board, this.state.board.storm);
+        var stormyPig = stormMeters[this.brainz.playerObjectList.length][stormLevel];
         return (
             <div className="App">
                 <header className="App-header">
@@ -191,7 +198,7 @@ class App extends Component {
                     <div className="flexy">
                         <BoardView board={this.state.board} players={this.brainz.playerObjectList} highlights={moves}/>
                         <CardDeck card={this.state.lastCard}/>
-                        <StormMeter stormPiggy={stormMeters[this.brainz.playerObjectList.length][stormLevel]}/>
+                        <StormMeter stormPiggy={stormyPig}/>
 
                         <div className="vertyflexy"><p>
                             <br/><PlayerView player_type={Climber.type} pos={this.state.board.idToPos(Climber.tileID)}/>,

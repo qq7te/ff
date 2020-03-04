@@ -4,7 +4,7 @@ import {Artifact, Board, Direction} from './Board.js';
 import Player from "./Players";
 import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
-import {carta_normale, carta_speciale} from "./Deck"
+import {carta_normale, carta_speciale, Deck} from "./Deck"
 
 var initial_board = new Board();
 
@@ -109,7 +109,7 @@ class Brainz {
 
     decreaseNumberOfMoves = () => {
 
-        this.numberOfMoves = this.numberOfMoves - 1;
+        this.numberOfMoves--;
         if (this.numberOfMoves === 0) {
             this.nextturn();
         }
@@ -135,7 +135,7 @@ class App extends Component {
 
     app_moves_things = () => {
         for (var i = 0; i < this.brainz.currentStormLevel(); i++) {
-            const pickedCard = pickCard(this.state.theDeck, this.state.usedDeck);
+            const pickedCard = new Deck().pickCard(this.state.theDeck, this.state.usedDeck);
             this.handleCard(pickedCard, this.brainz.playerObjectList);
             this.moveTheStorm(pickedCard);
         }
@@ -265,15 +265,14 @@ class App extends Component {
                 shoveltile.x = 0
             }
             shoveltile.y = position.y;
-
         }
+
         if (direction === Direction.down) {
             shoveltile.x = position.x + 1;
             if (shoveltile.x > 3) {
                 shoveltile.x = 4
             }
             shoveltile.y = position.y;
-
         }
 
         if (direction === Direction.left) {
@@ -282,7 +281,6 @@ class App extends Component {
                 shoveltile.y = 0
             }
             shoveltile.x = position.x;
-
         }
 
         if (direction === Direction.right) {
@@ -291,7 +289,6 @@ class App extends Component {
                 shoveltile.y = 4
             }
             shoveltile.x = position.x;
-
         }
 
         if (direction === "already here") {
@@ -307,7 +304,8 @@ class App extends Component {
             tile.sand = 0;
         }
         console.log("and now current sand level: " + tile.sand);
-        this.setState({board: this.state.board})
+        this.setState({board: this.state.board});
+        this.brainz.decreaseNumberOfMoves();
     };
 
 
@@ -335,6 +333,7 @@ class App extends Component {
             this.state.board.posToTile(this.state.board.idToPos(this.brainz.currentPlayer().tileID)).excavated = true;
             this.setState({ board: this.state.board });
             console.log("A tile has been excavated! You're all going to die!");
+            this.brainz.decreaseNumberOfMoves();
         }
     };
 

@@ -1,4 +1,28 @@
 
+    /**
+     * method that picks a card from the given deck1 and discards cards in deck2
+     * @param deck1 the deck we're picking from
+     * @param deck2 the deck where we discard
+     * @returns the picked card
+     */
+    function pickCard (deck1, deck2) {
+        console.log("the deck has " + deck1.length + " cards!");
+
+        // here we make sure to pick something at random
+        const index = Math.floor(Math.random() * deck1.length);
+        const pickedCard = deck1[index];
+
+        deck2.push(pickedCard);
+        deck1.splice(index, 1);
+        if (deck1.length === 0) {
+            deck1.push(...deck2);
+            deck2.splice(0, deck2.length);
+            console.log("the deck ... now ...  has " + deck1.length + " cards!");
+        }
+        return pickedCard;
+    }
+
+
 class carta_normale {
     constructor(direction, magnitude) {
         this.direction = direction;
@@ -23,29 +47,9 @@ class Deck {
         this.discarded = [];
     }
 
-    /**
-     * method that picks a card from the given deck1 and discards cards in deck2
-     * @param deck1 the deck we're picking from
-     * @param deck2 the deck where we discard
-     * @returns the picked card
-     */
-    pickCard = (deck1, deck2) => {
-        console.log("the deck has " + deck1.length + " cards!");
-
-        // here we make sure to pick something at random
-        const index = Math.floor(Math.random() * deck1.length);
-        const pickedCard = deck1[index];
-
-        deck2.push(pickedCard);
-        deck1.splice(index, 1);
-        if (deck1.length === 0) {
-            deck1.push(...deck2);
-            deck2.splice(0, deck2.length);
-            console.log("the deck ... now ...  has " + deck1.length + " cards!");
-        }
-        return pickedCard;
+    pickCard = () => {
+        return pickCard(this.fresh_cards, this.discarded);
     }
-
 }
 
 export {carta_normale, carta_speciale, Deck};

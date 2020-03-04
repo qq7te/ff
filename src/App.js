@@ -123,10 +123,11 @@ class App extends Component {
     constructor() {
         super();
         this.brainz = new Brainz([Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist], this);
+        this.deck = new Deck(startDeck);
         this.state = {
             board: initial_board,
-            usedDeck: [],
-            theDeck: startDeck,
+            // usedDeck: [],
+            // theDeck: startDeck,
             lastCard: {magnitude: 20, direction: "nowhere"},
             players: [Climber, Watercarrier, Explorer, Archaeologist, Navigator, Meteorologist],
             currentPlayer: 0,
@@ -135,7 +136,7 @@ class App extends Component {
 
     app_moves_things = () => {
         for (var i = 0; i < this.brainz.currentStormLevel(); i++) {
-            const pickedCard = new Deck().pickCard(this.state.theDeck, this.state.usedDeck);
+            const pickedCard = this.deck.pickCard();
             this.handleCard(pickedCard, this.brainz.playerObjectList);
             this.moveTheStorm(pickedCard);
         }
@@ -172,7 +173,7 @@ class App extends Component {
                         <BoardView board={this.state.board} players={this.brainz.playerObjectList} highlights={moves}/>
                         <CardDeck card={this.state.lastCard}/>
                         <StormMeter stormPiggy={stormyPig}/>
-
+                        moves left : {this.brainz.numberOfMoves}
                         <div className="vertyflexy"><p>
                             <br/><PlayerView player_type={Climber.type} pos={this.state.board.idToPos(Climber.tileID)}/>,
                             <br/><PlayerView player_type={Explorer.type} pos={this.state.board.idToPos(Explorer.tileID)}/>,

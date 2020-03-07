@@ -1,13 +1,7 @@
 import './Board.css';
 import ivybackground from "./ivybackground-ff-1.png"
 import bear from "./bear-ff-2.png"
-
-const Direction = Object.freeze({
-    up: 'u',
-    down: 'd',
-    left: 'l',
-    right: 'r'
-});
+import Direction from "./Direction"
 
 const Artifact = Object.freeze({
     red: 'r',

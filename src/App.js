@@ -147,8 +147,13 @@ class App extends Component {
         if (pickedCard instanceof carta_speciale) {
             if (pickedCard.tipo === "WindPU") {
                 stormLevel = stormLevel + 1;
+                //************
+                //   THIS IS BROKEN
+                // *************
+                console.log("wind picks up to " + stormMeter[stormLevel]);
             }
             if (pickedCard.tipo === "SunBD") {
+                console.log("sun beats down");
                 modifiablePlayerList.map((player) => {
                     player.water_level--;
                     return player

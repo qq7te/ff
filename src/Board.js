@@ -40,7 +40,7 @@ const TileType = Object.freeze({
     storm: 14,
 
 
-})
+});
 
 class Board {
     constructor() {

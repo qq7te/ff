@@ -1,14 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {carta_normale, Deck} from "./Deck";
-import Direction from "./Direction"
-
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+import {carta_normale, Deck} from "../Deck";
+import Direction from "../Direction"
 
 let startDeck = [
     new carta_normale(Direction.up, 1),
@@ -16,7 +7,7 @@ let startDeck = [
     new carta_normale(Direction.up, 3),
 ];
 
-it('picks a card', () => {
+it('handles cards correctly', () => {
     const initalSize = startDeck.length;
     let deck = new Deck(startDeck);
     for (let howManyTimes = 0; howManyTimes < 3; ++howManyTimes) {

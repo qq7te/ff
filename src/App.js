@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import {Artifact, Board, Direction} from './Board.js';
 import Player from "./Players";
+import Brainz from "./Brainz";
 import {BoardView} from "./views/BoardView";
 import {CardDeck, WaterLevelView} from "./views/various";
 import {carta_normale, carta_speciale, Deck} from "./Deck"
@@ -38,14 +39,6 @@ var startDeck = [
     new carta_speciale("SunBD")
 ];
 
-var stormMeter = [2, 3, 4, 5, 6, 7];
-var stormMeters = [[],[],[2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
-    [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
-    [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
-    [2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7],
-    [2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7]];
-var stormLevel = 0;
-
 
 class PlayerView extends Component {
     render = () =>
@@ -58,67 +51,7 @@ export class StormMeter extends Component {
 }
 
 
-class Brainz {
-    constructor(playerObjectList, app) {
-        this.board = new Board();
-        this.currentPlayerIndex = 0;
-        this.numberOfMoves = 4;
-        this.playerObjectList = playerObjectList;
-        this.callbackApp = app;
-    }
-
-    currentStormLevel = () => {
-        return stormMeters[this.playerObjectList.length][stormLevel];
-    }
-
-    currentPlayer = () => {
-
-        return this.playerObjectList[this.currentPlayerIndex];
-
-    };
-
-
-    movePlayer = (direction) => {
-        const pos = this.board.idToPos(this.currentPlayer().tileID);
-        const newpos = this.board.getNewCoordinates(pos, direction);
-
-        const newtile = this.board.posToTile(newpos);
-        const potentialTileIDs = this.currentPlayer().canMove(this.board, pos);
-        if (potentialTileIDs.includes(newtile.id)) {
-            this.currentPlayer().tileID = newtile.id;
-            this.decreaseNumberOfMoves();
-        }
-    };
-
-    nextplayer = () => {
-
-        this.currentPlayerIndex = this.currentPlayerIndex + 1;
-        this.numberOfMoves = 4;
-        if (this.currentPlayerIndex === this.playerObjectList.length) {
-
-            this.currentPlayerIndex = 0;
-        }
-
-    };
-
-    nextturn = () => {
-        this.nextplayer();
-        this.callbackApp.app_moves_things();
-
-    };
-
-    decreaseNumberOfMoves = () => {
-
-        this.numberOfMoves--;
-        if (this.numberOfMoves === 0) {
-            this.nextturn();
-        }
-
-    }
-}
-
-
-class App extends Component {
+export default class App extends Component {
 
     constructor() {
         super();
@@ -143,32 +76,13 @@ class App extends Component {
 
     };
 
-    handleCard = (pickedCard, modifiablePlayerList) => {
-        if (pickedCard instanceof carta_speciale) {
-            if (pickedCard.tipo === "WindPU") {
-                stormLevel = stormLevel + 1;
-                //************
-                //   THIS IS BROKEN
-                // *************
-                console.log("wind picks up to " + stormMeter[stormLevel]);
-            }
-            if (pickedCard.tipo === "SunBD") {
-                console.log("sun beats down");
-                modifiablePlayerList.map((player) => {
-                    player.water_level--;
-                    return player
-                });
-            }
-        }
-    };
-
 
     render() {
 
         const currentPlayer = this.brainz.currentPlayer();//.state.players[this.state.currentPlayer];
         const playerPosition = this.state.board.idToPos(currentPlayer.tileID);
         const moves = currentPlayer.canMove(this.state.board, this.state.board.storm);
-        var stormyPig = stormMeters[this.brainz.playerObjectList.length][stormLevel];
+        var stormyPig = this.brainz.currentStormLevel();
         return (
             <div className="App">
                 <header className="App-header">
@@ -342,10 +256,11 @@ class App extends Component {
             this.brainz.decreaseNumberOfMoves();
         }
     };
+    gameover = (msg) => {console.log(msg); };
 
 }
 
-export default App;
+// export default App;
 
 //Rishi waz here!
 //DOOM HAS BEEN UNLEASHED. i pity you.
